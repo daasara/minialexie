@@ -26,7 +26,17 @@ class Account(models.Model):
     budget = models.IntegerField(default=0)
 
     def balance(self, from_date=date(1900, 1, 1), to_date=date(2100, 1, 1)):
-        pass
+        total = 0
+        debit_transactions = self.debit_transactions.filter(created__gte=from_date, created__lte=to_date)
+        credit_transactions = self.credit_transactions.filter(created__gte=from_date, created__lte=to_date)
+
+        for debit in debit_transactions:
+            total += self.account_type.sign * debit.amount
+
+        for credit in credit_transactions:
+            total -= self.account_type.sign * credit.amount
+
+        return total
 
     def __str__(self):
         return "%s" % self.name

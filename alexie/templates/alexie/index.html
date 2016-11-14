@@ -16,7 +16,7 @@
 
 {{ account_type_names|get_item:account_type_id }}
 {% for account in accounts %}
-{{ account }}
+{{ account_names|get_item:account.id }}  {{ account_balances|get_item:account.id }}
 {% endfor %}
 {% endfor %}
 
