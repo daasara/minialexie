@@ -1,0 +1,14 @@
+# https://github.com/github/gitignore/blob/master/Python.gitignore
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# virtualenv
+venv/
+ENV/
