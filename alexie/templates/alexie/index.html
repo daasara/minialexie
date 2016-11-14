@@ -1,0 +1,25 @@
+{% load alexie_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Mini ALEXIE</title>
+    </head>
+    <body>
+        ALEXIE home Welcome {{ request.user }}
+
+        <hr>
+        <pre>
+
+{% for account_type_id, accounts in accounts.items %}
+
+{{ account_type_names|get_item:account_type_id }}
+{% for account in accounts %}
+{{ account }}
+{% endfor %}
+{% endfor %}
+
+        </pre>
+    </body>
+</html>

@@ -19,6 +19,7 @@ from django.contrib import admin
 import sitewide.views
 
 urlpatterns = [
+    url(r'^$', sitewide.views.index),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^accounts/profile/$', sitewide.views.UserProfile.as_view()),

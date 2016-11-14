@@ -40,5 +40,5 @@ class Transaction(models.Model):
     created = models.DateField("Creation date of transaction", default=date.today)
 
     def __str__(self):
-        return "%s %s... %s %s/%s" % (self.created, self.description[:16], self.amount, self.debit, self.credit)
+        return "%s %s %s %s/%s" % (self.created, self.description, self.amount, self.debit, self.credit)
         
