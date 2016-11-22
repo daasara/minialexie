@@ -1,1 +1,3 @@
 Setting and remembering from/to dates: GET parameters in URL or store in session?
+
+Look for FIXMEs

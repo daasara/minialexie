@@ -1,0 +1,41 @@
+Follow the structure of Alexie Beans
+
+CRUD
+(C)reate
+(R)ead
+(U)pdate
+(D)elete
+
+Account Type
+------------
+Create accounttype/create
+When creating an AccountType, create a special "dummy" account with the same name, that will hold transactions from deleted accounts. Ideally should be marked special.
+
+Read   accounttype/read/(?P<pk>)
+
+Update accounttype/update/(?P<pk>)
+
+Delete accounttype/delete/(?P<pk>)
+What should happen? should only allow deletion of AccountType without any Accounts (that is, delete its accounts first). Provide mechanism to delete Accounts in bulk. Move all transactions to a "sink" account, such as the "Imbalance" AccountType and Account (term used in GNUCash)
+
+Account
+-------
+Create account/create
+
+Read   account/read/(?P<pk>)
+
+Update account/update/(?P<pk>)
+
+Delete account/delete/(?P<pk>)
+What should happen? blindly deleting transactions will mess up totals on the other side of the equation. For example, if I spent $10 for lunch and delete the Restaurant account, suddenly I have $10 in my wallet that shouldn't be there. Prompt user to set new account name, otherwise set all transactions to special "AccountType" account, and if it does not exist, create it. 
+
+Transaction
+-----------
+Create transaction/create
+
+Read   transaction/read/(?P<pk>)
+
+Update transaction/update/(?P<pk>)
+
+Delete transaction/delete/(?P<pk>)
+Warn user that the balance of both sides will be affected

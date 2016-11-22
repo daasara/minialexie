@@ -1,0 +1,37 @@
+<form action="{% url 'alexie:transactionSave' %}" method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>Date:</td>
+            <td>{{ form.created }}</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{ form.description }}</td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td>{{ form.amount }}</td>
+        </tr>
+        <tr>
+            <td>Debit</td>
+            <td>{{ form.debit }}</td>
+        </tr>
+        <tr>            
+            <td>Credit</td>
+            <td>{{ form.credit }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Submit transaction"></td>
+        </tr>
+    </table>
+
+</form>
+
+<!-- Newest 25 transactions -->
+<pre>
+{% for transaction in newestTransactions %}
+{{ transaction }}
+{% endfor %}
+</pre>

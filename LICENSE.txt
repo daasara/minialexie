@@ -1,1 +1,3 @@
 MIT
+
+Borrows ideas from GNUCash

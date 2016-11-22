@@ -1,10 +1,16 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render, redirect
 
 from .models import AccountType, Account, Transaction
+from .forms import TransactionForm
 from .util import parse_from_date, parse_to_date
     
 def index(request):
+    """
+    Display all account balances in the selected time period
+    """
+    
     # check if user is logged in
     if not request.user.is_authenticated():
         return redirect('/auth/login/')
@@ -32,7 +38,28 @@ def index(request):
                     'account_names': account_names,
                     'account_balances': account_balances })
 
-def accountView(request, pk):
+# AccountType
+
+def accounttypeCreate(request):
+    # check for POST data, otherwise output a form
+    pass
+    
+def accounttypeRead(request, pk):
+    pass
+    
+def accounttypeUpdate(request, pk):
+    pass
+    
+def accounttypeDelete(request, pk):
+    pass
+
+# Account
+
+def accountCreate(request):
+    # check for POST data, otherwise output a form
+    pass
+
+def accountRead(request, pk):
     from_date = parse_from_date(request)
     to_date = parse_to_date(request)
     
@@ -49,3 +76,48 @@ def accountView(request, pk):
                   { 'id': pk,
                     'account': account,
                     'transactions': transactions })
+
+def accountUpdate(request, pk):
+    pass
+
+def accountDelete(request, pk):
+    pass
+    
+# Transaction
+
+def transactionCreate(request):
+    form = TransactionForm()
+    accounts = Account.objects.filter(user=request.user)
+    form.fields['debit'].queryset = accounts
+    form.fields['credit'].queryset = accounts
+
+    newestTransactions = Transaction.objects.filter(user=request.user).order_by('-created')[:25]
+    return render(request, 'alexie/transactionCreate.html', { 'form': form, 'newestTransactions': newestTransactions })
+
+def transactionSave(request):
+    if request.method == "POST":
+        # return HttpResponse("In Save : got POST")
+        form = TransactionForm(request.POST)
+        form.fields['debit'].queryset = Account.objects.filter(pk=request.POST['debit'])
+        form.fields['credit'].queryset = Account.objects.filter(pk=request.POST['credit'])
+        #print(form)
+        if form.is_valid():
+            transaction = Transaction()
+            transaction.user = request.user
+            transaction.description = form.cleaned_data['description']
+            transaction.amount = form.cleaned_data['amount']
+            transaction.debit = form.cleaned_data['debit']
+            transaction.credit = form.cleaned_data['credit']
+            transaction.created = form.cleaned_data['created']
+            transaction.save()
+    return HttpResponseRedirect(reverse('alexie:transactionCreate'))
+    
+def transactionRead(request, pk):
+    pass
+
+def transactionUpdate(request, pk):
+    pass
+    
+def transactionDelete(request, pk):
+    pass
+    
