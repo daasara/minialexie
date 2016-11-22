@@ -41,7 +41,10 @@ def index(request):
 # AccountType
 
 def accounttypeCreate(request):
-    # check for POST data, otherwise output a form
+    pass
+    
+def accounttypeSave(request):
+    # check for POST data to save, redirect to Create in any case
     pass
     
 def accounttypeRead(request, pk):
@@ -56,7 +59,9 @@ def accounttypeDelete(request, pk):
 # Account
 
 def accountCreate(request):
-    # check for POST data, otherwise output a form
+    pass
+
+def accountSave(request):
     pass
 
 def accountRead(request, pk):

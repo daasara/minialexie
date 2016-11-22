@@ -1,7 +1,7 @@
 Follow the structure of Alexie Beans
 
 CRUD
-(C)reate
+(C)reate and Save
 (R)ead
 (U)pdate
 (D)elete
@@ -10,6 +10,9 @@ Account Type
 ------------
 Create accounttype/create
 When creating an AccountType, create a special "dummy" account with the same name, that will hold transactions from deleted accounts. Ideally should be marked special.
+
+Save   accounttype/save
+A URL that looks for POST data to save, then redirects to the create URL that contains the form
 
 Read   accounttype/read/(?P<pk>)
 
@@ -22,6 +25,8 @@ Account
 -------
 Create account/create
 
+Save   account/save
+
 Read   account/read/(?P<pk>)
 
 Update account/update/(?P<pk>)
@@ -32,6 +37,8 @@ What should happen? blindly deleting transactions will mess up totals on the oth
 Transaction
 -----------
 Create transaction/create
+
+Save   transaction/save
 
 Read   transaction/read/(?P<pk>)
 

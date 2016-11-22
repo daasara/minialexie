@@ -9,12 +9,14 @@ urlpatterns = [
 
     # AccountType
     url(r'^accounttype/create$', views.accounttypeCreate, name="accounttypeCreate"),
+    url(r'^accounttype/save$', views.accounttypeSave, name="accounttypeSave"),
     url(r'^accounttype/read/(?P<pk>[0-9]+)$', views.accounttypeRead, name="accounttypeRead"),
     url(r'^accounttype/update/(?P<pk>[0-9]+)$', views.accounttypeUpdate, name="accounttypeUpdate"),
     url(r'^accounttype/delete/(?P<pk>[0-9]+)$', views.accounttypeDelete, name="accounttypedelete"),
 
     # Account
-    #url(r'^$', views., name=""),
+    #url(r'^$', views., name="accountCreate"),
+    #url(r'^$', views., name="accountSave"),
     url(r'^account/read/(?P<pk>[0-9]+)$', views.accountRead, name="account"),
     #url(r'^$', views., name=""),
     #url(r'^$', views., name=""),

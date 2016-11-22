@@ -17,7 +17,7 @@
             <b><i>{{ account_type_names|get_item:account_type_id }}</i></b>
 {% for account in accounts %}
 
-                    <a href="/alexie/account/{{ account.id }}">{{ account_names|get_item:account.id }}</a>
+                    <a href="/alexie/account/read/{{ account.id }}">{{ account_names|get_item:account.id }}</a>
                
                     {{ account_balances|get_item:account.id }}
 {% endfor %}
