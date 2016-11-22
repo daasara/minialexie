@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 
 from .models import AccountType, Account, Transaction
-from .forms import TransactionForm
-from .util import parse_from_date, parse_to_date
+from .forms import AccountTypeForm, TransactionForm
+from .util import parse_from_date, parse_to_date, parse_amount
     
 def index(request):
     """
@@ -40,20 +40,34 @@ def index(request):
 
 # AccountType
 
-def accounttypeCreate(request):
-    pass
+def accountTypeCreate(request):
+    form = AccountTypeForm()
+    return render(request, 'alexie/accountTypeCreate.html', { 'form': form })
     
-def accounttypeSave(request):
+def accountTypeSave(request):
     # check for POST data to save, redirect to Create in any case
+    if request.method == "POST":
+        form = AccountTypeForm(request.POST)
+        
+        if form.is_valid():
+            accountType = AccountType()
+            accountType.user = request.user
+            accountType.name = form.cleaned_data['name']
+            # prevent invalid input: nonzero and greater than or less than +/-1
+            if form.cleaned_data['sign'] == 0:
+                accountType.sign = 1
+            else:
+                accountType.sign = round(form.cleaned_data['sign'] / abs(form.cleaned_data['sign']))
+            accountType.save()
+    return HttpResponseRedirect(reverse('alexie:accountTypeCreate'))
+    
+def accountTypeRead(request, pk):
     pass
     
-def accounttypeRead(request, pk):
+def accountTypeUpdate(request, pk):
     pass
     
-def accounttypeUpdate(request, pk):
-    pass
-    
-def accounttypeDelete(request, pk):
+def accountTypeDelete(request, pk):
     pass
 
 # Account
@@ -77,7 +91,7 @@ def accountRead(request, pk):
         created__gte=from_date,
         created__lte=to_date)
             
-    return render(request, "alexie/account.html",
+    return render(request, "alexie/accountRead.html",
                   { 'id': pk,
                     'account': account,
                     'transactions': transactions })
@@ -92,7 +106,7 @@ def accountDelete(request, pk):
 
 def transactionCreate(request):
     form = TransactionForm()
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('name')
     form.fields['debit'].queryset = accounts
     form.fields['credit'].queryset = accounts
 
@@ -101,16 +115,15 @@ def transactionCreate(request):
 
 def transactionSave(request):
     if request.method == "POST":
-        # return HttpResponse("In Save : got POST")
         form = TransactionForm(request.POST)
         form.fields['debit'].queryset = Account.objects.filter(pk=request.POST['debit'])
         form.fields['credit'].queryset = Account.objects.filter(pk=request.POST['credit'])
-        #print(form)
+
         if form.is_valid():
             transaction = Transaction()
             transaction.user = request.user
             transaction.description = form.cleaned_data['description']
-            transaction.amount = form.cleaned_data['amount']
+            transaction.amount = parse_amount(form.cleaned_data['amount'])
             transaction.debit = form.cleaned_data['debit']
             transaction.credit = form.cleaned_data['credit']
             transaction.created = form.cleaned_data['created']

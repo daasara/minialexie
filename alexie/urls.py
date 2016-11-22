@@ -8,16 +8,16 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
 
     # AccountType
-    url(r'^accounttype/create$', views.accounttypeCreate, name="accounttypeCreate"),
-    url(r'^accounttype/save$', views.accounttypeSave, name="accounttypeSave"),
-    url(r'^accounttype/read/(?P<pk>[0-9]+)$', views.accounttypeRead, name="accounttypeRead"),
-    url(r'^accounttype/update/(?P<pk>[0-9]+)$', views.accounttypeUpdate, name="accounttypeUpdate"),
-    url(r'^accounttype/delete/(?P<pk>[0-9]+)$', views.accounttypeDelete, name="accounttypedelete"),
+    url(r'^accountType/create$', views.accountTypeCreate, name="accountTypeCreate"),
+    url(r'^accountType/save$', views.accountTypeSave, name="accountTypeSave"),
+    url(r'^accountType/read/(?P<pk>[0-9]+)$', views.accountTypeRead, name="accountTypeRead"),
+    url(r'^accountType/update/(?P<pk>[0-9]+)$', views.accountTypeUpdate, name="accountTypeUpdate"),
+    url(r'^accountType/delete/(?P<pk>[0-9]+)$', views.accountTypeDelete, name="accountTypedelete"),
 
     # Account
     #url(r'^$', views., name="accountCreate"),
     #url(r'^$', views., name="accountSave"),
-    url(r'^account/read/(?P<pk>[0-9]+)$', views.accountRead, name="account"),
+    url(r'^account/read/(?P<pk>[0-9]+)$', views.accountRead, name="accountRead"),
     #url(r'^$', views., name=""),
     #url(r'^$', views., name=""),
 

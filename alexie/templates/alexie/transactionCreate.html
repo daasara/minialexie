@@ -1,3 +1,8 @@
+{% extends "alexie/base.html" %}
+
+{% block title %}Create Transaction{% endblock %}
+
+{% block content %}
 <form action="{% url 'alexie:transactionSave' %}" method="POST">
     {% csrf_token %}
     <table>
@@ -35,3 +40,4 @@
 {{ transaction }}
 {% endfor %}
 </pre>
+{% endblock %}

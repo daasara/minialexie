@@ -8,17 +8,17 @@ CRUD
 
 Account Type
 ------------
-Create accounttype/create
+Create accountType/create
 When creating an AccountType, create a special "dummy" account with the same name, that will hold transactions from deleted accounts. Ideally should be marked special.
 
-Save   accounttype/save
+Save   accountType/save
 A URL that looks for POST data to save, then redirects to the create URL that contains the form
 
-Read   accounttype/read/(?P<pk>)
+Read   accountType/read/(?P<pk>)
 
-Update accounttype/update/(?P<pk>)
+Update accountType/update/(?P<pk>)
 
-Delete accounttype/delete/(?P<pk>)
+Delete accountType/delete/(?P<pk>)
 What should happen? should only allow deletion of AccountType without any Accounts (that is, delete its accounts first). Provide mechanism to delete Accounts in bulk. Move all transactions to a "sink" account, such as the "Imbalance" AccountType and Account (term used in GNUCash)
 
 Account

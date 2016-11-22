@@ -1,0 +1,30 @@
+{% extends "alexie/base.html" %}
+
+{% block title %}Create Account Type{% endblock %}
+
+{% block content %}
+<form action="{% url 'alexie:accountTypeSave' %}" method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <td>Sign (+/-1):</td>
+            <td>{{ form.sign }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Submit transaction"></td>
+        </tr>
+    </table>
+
+</form>
+
+<pre>
+{% for accounttype in accounttypes %}
+{{ accounttype.name }} ({{ accounttype.sign }})
+{% endfor %}
+</pre>
+{% endblock %}

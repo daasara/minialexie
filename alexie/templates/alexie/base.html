@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Mini Alexie {% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <div id="header">
+            {% include "alexie/header.html" %}
+        </div>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

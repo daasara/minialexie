@@ -21,3 +21,7 @@ def parse_to_date(request):
         to_date = date(2100, 1, 1)
 
     return to_date
+
+def parse_amount(s):
+    """Convert an amount string s to an integer representing the number of cents in s"""
+    return round(float(s.replace(",", "."))*100)
