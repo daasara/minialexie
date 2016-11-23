@@ -1,9 +1,9 @@
 {% extends "alexie/base.html" %}
 
-{% block title %}Create Transaction{% endblock %}
+{% block title %}Update Transaction{% endblock %}
 
 {% block content %}
-<form action="{% url 'alexie:transactionSaveCreate' %}" method="POST">
+<form action="{% url 'alexie:transactionSaveUpdate' id %}" method="POST">
     {% csrf_token %}
     <table>
         <tr>
@@ -35,11 +35,9 @@
 </form>
 
 <!-- Newest 25 transactions -->
+<pre>
 {% for transaction in newestTransactions %}
-<p>
-    <a href="{% url 'alexie:transactionConfirmDelete' transaction.id %}">(delete)</a>
-    <a href="{% url 'alexie:transactionUpdate' transaction.id %}">{{ transaction }}</a>
-</p>
+{{ transaction }}
 {% endfor %}
 </pre>
 {% endblock %}

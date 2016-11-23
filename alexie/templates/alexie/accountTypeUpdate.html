@@ -1,9 +1,10 @@
 {% extends "alexie/base.html" %}
 
-{% block title %}Create Account Type{% endblock %}
+{% block title %}Update Account Type{% endblock %}
 
 {% block content %}
-<form action="{% url 'alexie:accountTypeSaveCreate' %}" method="POST">
+<form action="{% url 'alexie:accountTypeSaveUpdate' id %}" method="POST">
+    {{ form }}
     {% csrf_token %}
     <table>
         <tr>

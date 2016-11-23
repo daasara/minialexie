@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 
 from .models import AccountType, Account, Transaction
 from .forms import AccountTypeForm, TransactionForm
-from .util import parse_from_date, parse_to_date, parse_amount
+from .util import parse_from_date, parse_to_date, parse_amount, display_amount
     
 def index(request):
     """
@@ -44,7 +44,7 @@ def accountTypeCreate(request):
     form = AccountTypeForm()
     return render(request, 'alexie/accountTypeCreate.html', { 'form': form })
     
-def accountTypeSave(request):
+def accountTypeSaveCreate(request):
     # check for POST data to save, redirect to Create in any case
     if request.method == "POST":
         form = AccountTypeForm(request.POST)
@@ -59,23 +59,41 @@ def accountTypeSave(request):
             else:
                 accountType.sign = round(form.cleaned_data['sign'] / abs(form.cleaned_data['sign']))
             accountType.save()
+            
     return HttpResponseRedirect(reverse('alexie:accountTypeCreate'))
     
 def accountTypeRead(request, pk):
     pass
     
 def accountTypeUpdate(request, pk):
-    pass
+    accountType = AccountType.objects.get(user=request.user, pk=pk)
+    form = AccountTypeForm(instance=accountType)
+    return render(request, 'alexie/accountTypeUpdate.html', { 'form': form, 'id': pk })
+
+def accountTypeSaveUpdate(request, pk):
+    if request.method == "POST":
+        form = AccountTypeForm(request.POST)
+        
+        if form.is_valid():
+            accountType = AccountType.objects.get(user=request.user, pk=pk)
+            accountType.name = form.cleaned_data['name']
+            accountType.sign = round(form.cleaned_data['sign'] / abs(form.cleaned_data['sign']))
+            accountType.save()
+            
+    return HttpResponseRedirect(reverse('alexie:accountTypeCreate'))
     
 def accountTypeDelete(request, pk):
-    pass
+    accountType = AccountType.objects.get(user=request.user, pk=pk)
+    accountType.delete()
+    return HttpResponseRedirect(reverse('alexie:index'))
+
 
 # Account
 
 def accountCreate(request):
     pass
 
-def accountSave(request):
+def accountSaveCreate(request):
     pass
 
 def accountRead(request, pk):
@@ -99,7 +117,13 @@ def accountRead(request, pk):
 def accountUpdate(request, pk):
     pass
 
+def accountSaveUpdate(request, pk):
+    pass
+
 def accountDelete(request, pk):
+    account = Account.objects.get(user=request.user, pk=pk)
+    account.delete()
+    return HttpResponseRedirect(reverse('alexie:index'))
     pass
     
 # Transaction
@@ -113,7 +137,7 @@ def transactionCreate(request):
     newestTransactions = Transaction.objects.filter(user=request.user).order_by('-created')[:25]
     return render(request, 'alexie/transactionCreate.html', { 'form': form, 'newestTransactions': newestTransactions })
 
-def transactionSave(request):
+def transactionSaveCreate(request):
     if request.method == "POST":
         form = TransactionForm(request.POST)
         form.fields['debit'].queryset = Account.objects.filter(pk=request.POST['debit'])
@@ -131,9 +155,49 @@ def transactionSave(request):
     return HttpResponseRedirect(reverse('alexie:transactionCreate'))
     
 def transactionRead(request, pk):
+    # share template with transactionConfirmDelete
     pass
 
 def transactionUpdate(request, pk):
+    transaction = Transaction.objects.get(user=request.user, pk=pk)
+    try:
+        debit_id = transaction.debit.id
+    except AttributeError:
+        # will occur if Transaction belonged to a deleted account
+        debit_id = ""
+
+    try:
+        credit_id = transaction.credit.id
+    except AttributeError:
+        credit_id = ""
+        
+    form = TransactionForm({ 'created': transaction.created,
+                             'description': transaction.description,
+                             'amount': display_amount(transaction.amount),
+                             'debit': debit_id,
+                             'credit': credit_id, })
+    form.fields['debit'].queryset = Account.objects.filter(user=request.user)
+    form.fields['credit'].queryset = Account.objects.filter(user=request.user)
+    return render(request, 'alexie/transactionUpdate.html', { 'form': form, 'id': pk })
+
+def transactionSaveUpdate(request, pk):
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        form.fields['debit'].queryset = Account.objects.filter(user=request.user)
+        form.fields['credit'].queryset = Account.objects.filter(user=request.user)
+        
+        if form.is_valid():
+            transaction = Transaction.objects.get(user=request.user, pk=pk)
+            transaction.description = form.cleaned_data['description']
+            transaction.amount = parse_amount(form.cleaned_data['amount'])
+            transaction.debit = form.cleaned_data['debit']
+            transaction.credit = form.cleaned_data['credit']
+            transaction.created = form.cleaned_data['created']
+            transaction.save()
+    return HttpResponseRedirect(reverse('alexie:transactionCreate'))
+
+def transactionConfirmDelete(request, pk):
+    # share template with transactionRead
     pass
     
 def transactionDelete(request, pk):

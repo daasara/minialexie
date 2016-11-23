@@ -25,3 +25,8 @@ def parse_to_date(request):
 def parse_amount(s):
     """Convert an amount string s to an integer representing the number of cents in s"""
     return round(float(s.replace(",", "."))*100)
+
+def display_amount(n):
+    """Convert amount n in cents (an integer) to an amount with decimal mark (1,50)"""
+    s = str(n)
+    return s[:-2] + "," + s[-2:]
