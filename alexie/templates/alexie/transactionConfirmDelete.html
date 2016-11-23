@@ -1,0 +1,19 @@
+{% extends "alexie/base.html" %}
+
+{% block title %}Confirm Delete Transaction{% endblock %}
+
+{% block content %}
+
+About to delete transaction:
+
+{% include 'alexie/transactionDetail.html' %}
+
+<pre>
+Are you sure?
+
+    <a href="{{ nextUrl }}">Yes</a>
+
+    <a href="{{ prevUrl }}">No</a>
+</pre>
+
+{% endblock %}

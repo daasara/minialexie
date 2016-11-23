@@ -3,12 +3,13 @@
 {% block title %}View Account{% endblock %}
 
 {% block content %}
-<pre>
     {{ id }}
     {{ account.name }}
 
     {% for transaction in transactions %}
-         {{ transaction.created }}   {{ transaction.description }} {{ transaction.amount }} {{ transaction.debit }} {{ transaction.credit }}
+
+{% include 'alexie/transactionSingleLine.html' %}
+
     {% endfor %}
-</pre>
+
 {% endblock %}

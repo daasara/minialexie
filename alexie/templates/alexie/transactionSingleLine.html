@@ -1,0 +1,4 @@
+<p>
+    <a href="{% url 'alexie:transactionConfirmDelete' transaction.id %}?prev={{ prevUrl }}">(delete)</a>
+    <a href="{% url 'alexie:transactionUpdate' transaction.id %}">{{ transaction }}</a>
+</p>

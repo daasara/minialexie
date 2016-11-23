@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.utils.http import is_safe_url
 
 from .models import AccountType, Account, Transaction
 from .forms import AccountTypeForm, TransactionForm
@@ -38,15 +39,16 @@ def index(request):
                     'account_names': account_names,
                     'account_balances': account_balances })
 
-# For every model
+# For every model, there are seven functions
 
-# create
-# saveCreate
-# read
-# update
-# saveUpdate
-# confirmDelete
-# delete
+#               AccountType   Account    Transaction
+#        create     done                    done
+#    saveCreate     done                    done
+#          read               sketch
+#        update  needs link                 done
+#    saveUpdate     done                    done
+# confirmDelete                             done
+#        delete  copy other  copy other     done
     
 # AccountType
 
@@ -96,6 +98,7 @@ def accountTypeConfirmDelete(request, pk):
     pass
     
 def accountTypeDelete(request, pk):
+    # FIXME Copy code in transactionDelete
     accountType = AccountType.objects.get(user=request.user, pk=pk)
     accountType.delete()
     return HttpResponseRedirect(reverse('alexie:index'))
@@ -125,11 +128,9 @@ def accountRead(request, pk):
     return render(request, "alexie/accountRead.html",
                   { 'id': pk,
                     'account': account,
-                    'transactions': transactions })
+                    'transactions': transactions,
+                    'prevUrl': reverse('alexie:accountRead', kwargs={ 'pk': pk }), })
 
-def accountRead(request, pk):
-    pass
-    
 def accountUpdate(request, pk):
     pass
 
@@ -153,7 +154,10 @@ def transactionCreate(request):
     form.fields['credit'].queryset = accounts
 
     newestTransactions = Transaction.objects.filter(user=request.user).order_by('-created')[:25]
-    return render(request, 'alexie/transactionCreate.html', { 'form': form, 'newestTransactions': newestTransactions })
+    return render(request, 'alexie/transactionCreate.html',
+                  { 'form': form,
+                    'newestTransactions': newestTransactions,
+                    'prevUrl': reverse('alexie:transactionCreate'), })
 
 def transactionSaveCreate(request):
     if request.method == "POST":
@@ -215,11 +219,23 @@ def transactionSaveUpdate(request, pk):
     return HttpResponseRedirect(reverse('alexie:transactionCreate'))
 
 def transactionConfirmDelete(request, pk):
-    # share template with transactionRead
-    pass
+    # share detail template with transactionRead
+    transaction = Transaction.objects.get(user=request.user, pk=pk)
+    prevUrl = request.GET.get('prev', reverse('alexie:index'))
+    nextUrl = reverse('alexie:transactionDelete', kwargs={ 'pk': pk }) + "?next=" + prevUrl
+    if not is_safe_url(prevUrl):
+        prev = reverse('alexie:index')
+    return render(request, 'alexie/transactionConfirmDelete.html',
+                  { 'transaction': transaction,
+                    'prevUrl': prevUrl,
+                    'nextUrl': nextUrl, })
     
 def transactionDelete(request, pk):
+    # http://stackoverflow.com/questions/35894990/django-how-to-return-to-previous-url
+    next = request.GET.get('next', reverse('alexie:index'))
     transaction = Transaction.objects.get(user=request.user, pk=pk)
     transaction.delete()
     # FIXME Redirect to previous page, most likely account view but could also be transactionRead
-    return HttpResponseRedirect(reverse('alexie:accountRead'))
+    if not is_safe_url(next):
+        next = reverse('alexie:index')
+    return HttpResponseRedirect(next)

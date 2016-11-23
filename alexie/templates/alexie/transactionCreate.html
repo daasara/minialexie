@@ -36,10 +36,11 @@
 
 <!-- Newest 25 transactions -->
 {% for transaction in newestTransactions %}
-<p>
-    <a href="{% url 'alexie:transactionConfirmDelete' transaction.id %}">(delete)</a>
-    <a href="{% url 'alexie:transactionUpdate' transaction.id %}">{{ transaction }}</a>
-</p>
+{% include 'alexie/transactionSingleLine.html' %}
 {% endfor %}
-</pre>
+
+<script>
+    document.getElementById("id_description").focus();
+</script>
+
 {% endblock %}
