@@ -38,6 +38,16 @@ def index(request):
                     'account_names': account_names,
                     'account_balances': account_balances })
 
+# For every model
+
+# create
+# saveCreate
+# read
+# update
+# saveUpdate
+# confirmDelete
+# delete
+    
 # AccountType
 
 def accountTypeCreate(request):
@@ -81,6 +91,9 @@ def accountTypeSaveUpdate(request, pk):
             accountType.save()
             
     return HttpResponseRedirect(reverse('alexie:accountTypeCreate'))
+
+def accountTypeConfirmDelete(request, pk):
+    pass
     
 def accountTypeDelete(request, pk):
     accountType = AccountType.objects.get(user=request.user, pk=pk)
@@ -114,17 +127,22 @@ def accountRead(request, pk):
                     'account': account,
                     'transactions': transactions })
 
+def accountRead(request, pk):
+    pass
+    
 def accountUpdate(request, pk):
     pass
 
 def accountSaveUpdate(request, pk):
     pass
 
+def accountConfirmDelete(request, pk):
+    pass
+    
 def accountDelete(request, pk):
     account = Account.objects.get(user=request.user, pk=pk)
     account.delete()
     return HttpResponseRedirect(reverse('alexie:index'))
-    pass
     
 # Transaction
 
@@ -201,5 +219,7 @@ def transactionConfirmDelete(request, pk):
     pass
     
 def transactionDelete(request, pk):
-    pass
-    
+    transaction = Transaction.objects.get(user=request.user, pk=pk)
+    transaction.delete()
+    # FIXME Redirect to previous page, most likely account view but could also be transactionRead
+    return HttpResponseRedirect(reverse('alexie:accountRead'))
