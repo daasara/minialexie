@@ -1,6 +1,31 @@
-24.nov.16
+* 24.nov.16
 
 A few days ago I initially worked on Transactions first. The Transaction Form is most verbose, and because amount is an IntegerField, I need a CharField to convert back and forth between amounts in cents or in whole amounts (dollars and cents).
 
 ModelForms do all the work for you.
+
+The last model I worked on was Account: Create and saveCreate
+
+* 24.nov.16
+
+Starting a new app to correct some of the mistakes in Alexie. Will call it benny (after Benjamin Franklin)
+
+$ python manage.py startapp benny
+
+Edit minialexie/settings.py, add benny to INSTALLED_APPS
+
+Edit models.py
+
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+Using exactly the same names in benny creates clashes with existing alexie models. I added related_names to alexie models, then re-ran the migrations.
+
+Edit admin.py
+
+Added default value of Decimal(0) to Account.budget
+
+Wrote tests for benny, adding zero, one, and two transactions
+
+Added r'^benny/' as an url in minialexie/urls.py. Had to restart server.
 

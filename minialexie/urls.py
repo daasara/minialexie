@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^accounts/profile/$', sitewide.views.UserProfile.as_view()),
     url(r'^alexie/', include('alexie.urls')),
+    url(r'^benny/', include('benny.urls')),
 ]

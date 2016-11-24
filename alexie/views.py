@@ -28,7 +28,7 @@ def index(request):
     
     for account_type in account_types:
         account_type_names[account_type.id] = account_type.name
-        accounts[account_type.id] = Account.objects.filter(account_type=account_type.id)
+        accounts[account_type.id] = Account.objects.filter(account_type=account_type.id).order_by('name')
         for account in accounts[account_type.id]:
             account_names[account.id] = account.name
             account_balances[account.id] = account.balance(from_date, to_date)
@@ -42,8 +42,8 @@ def index(request):
 # For every model, there are seven functions
 
 #               AccountType   Account    Transaction
-#        create     done                    done
-#    saveCreate     done                    done
+#        create     done       done         done
+#    saveCreate     done       done         done
 #          read               sketch
 #        update  needs link                 done
 #    saveUpdate     done                    done

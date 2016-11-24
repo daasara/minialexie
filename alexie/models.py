@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 # Transaction
 
 class AccountType(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='AccountTypeUser')
     name = models.CharField(max_length=100)
     sign = models.IntegerField()
 
@@ -20,7 +20,7 @@ class AccountType(models.Model):
 # repeat User ForeignKey for convenience, such as looking up all entries, or cascading delete
 
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='AccountUser')
     account_type = models.ForeignKey(AccountType, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=100)
     budget = models.IntegerField(default=0)
@@ -42,7 +42,7 @@ class Account(models.Model):
         return "%s" % self.name
 
 class Transaction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='TransactionUser')
     description = models.CharField(max_length=200)
     amount = models.IntegerField()
     debit = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name="debit_transactions")
