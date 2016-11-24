@@ -1,7 +1,14 @@
-Benny Home
+<div>
+    Benny Home
+</div>
 
 {% for accountType in accountTypes %}
-<p>
+<div style="float: left; padding: 20px;">
     {{ accountType.name }}
-</p>
+    {% for account in accountType.accountSummaries %}
+    <p>
+        {{ account.name }} {{ account.datesBalance }} / {{ account.budget }} {{ account.percentSpent }}
+    </p>
+    {% endfor %}
+</div>
 {% endfor %}

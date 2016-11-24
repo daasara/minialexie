@@ -29,3 +29,8 @@ Wrote tests for benny, adding zero, one, and two transactions
 
 Added r'^benny/' as an url in minialexie/urls.py. Had to restart server.
 
+Rewrote index, no need for templatetags like alexie's index
+
+Compute balances in time period in view, because we cannot call functions with arguments in the template 
+
+Compute percentage spent in view, display as a fraction, like Alexie Beans
