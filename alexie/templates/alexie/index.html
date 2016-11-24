@@ -4,17 +4,23 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-<pre>
 
-{% for account_type_id, accounts in accounts.items %}
-
-            <b><i>{{ account_type_names|get_item:account_type_id }}</i></b>
-{% for account in accounts %}
-
-                    <a href="{% url 'alexie:accountRead' account.id %}">{{ account_names|get_item:account.id }}</a>
-               
-                    {{ account_balances|get_item:account.id }}
-{% endfor %}
+<!-- https://docs.djangoproject.com/en/1.10/ref/templates/builtins/ -->
+<!-- Access keys and values of dictionary 'accounts' -->
+<!-- Use accounts only because we call items() in view, inside sorted() -->
+{% for account_type_id, accounts in accounts %}
+<div class="indexAccountType">
+    <i>{{ account_type_names|get_item:account_type_id }}</i>
+    ({{ account_type_id }})
+    <table>
+        {% for account in accounts %}
+        <tr>
+            <td><a href="{% url 'alexie:accountRead' account.id %}">{{ account_names|get_item:account.id }}</a></td>
+            <td style="padding-left: 15px; text-align: right;">{{ account_balances|get_item:account.id }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endfor %}
 
 </pre>

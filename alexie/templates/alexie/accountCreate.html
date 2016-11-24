@@ -1,0 +1,11 @@
+{% extends "alexie/base.html" %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<form action="{% url 'alexie:accountSaveCreate' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit">
+</form>
+{% endblock %}

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
 from .models import AccountType, Account, Transaction
-from .forms import AccountTypeForm, TransactionForm
+from .forms import AccountTypeForm, AccountForm, TransactionForm
 from .util import parse_from_date, parse_to_date, parse_amount, display_amount
     
 def index(request):
@@ -19,7 +19,7 @@ def index(request):
     from_date = parse_from_date(request)
     to_date = parse_to_date(request)
     
-    account_types = AccountType.objects.filter(user=request.user)
+    account_types = AccountType.objects.filter(user=request.user).order_by('name')
     account_type_names = {}
     
     accounts = {}
@@ -35,7 +35,7 @@ def index(request):
         
     return render(request, "alexie/index.html",
                   { 'account_type_names': account_type_names,
-                    'accounts': accounts,
+                    'accounts': sorted(accounts.items()),
                     'account_names': account_names,
                     'account_balances': account_balances })
 
@@ -49,7 +49,8 @@ def index(request):
 #    saveUpdate     done                    done
 # confirmDelete                             done
 #        delete  copy other  copy other     done
-    
+#    bulkDelete      not available       via checkboxes
+
 # AccountType
 
 def accountTypeCreate(request):
@@ -107,10 +108,24 @@ def accountTypeDelete(request, pk):
 # Account
 
 def accountCreate(request):
-    pass
+    form = AccountForm()
+    # Show only user's account types
+    form.fields['account_type'].queryset = AccountType.objects.filter(user=request.user)
+    return render(request, 'alexie/accountCreate.html', { 'form': form })
 
 def accountSaveCreate(request):
-    pass
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+
+        if form.is_valid():
+            account_type = AccountType.objects.get(user=request.user, pk=form.cleaned_data['account_type'].id)
+            account = Account()
+            account.user = request.user
+            account.account_type = account_type
+            account.name = form.cleaned_data['name']
+            account.budget = form.cleaned_data['budget']
+            account.save()
+    return HttpResponseRedirect(reverse('alexie:accountCreate'))
 
 def accountRead(request, pk):
     from_date = parse_from_date(request)
@@ -162,8 +177,8 @@ def transactionCreate(request):
 def transactionSaveCreate(request):
     if request.method == "POST":
         form = TransactionForm(request.POST)
-        form.fields['debit'].queryset = Account.objects.filter(pk=request.POST['debit'])
-        form.fields['credit'].queryset = Account.objects.filter(pk=request.POST['credit'])
+        form.fields['debit'].queryset = Account.objects.filter(user=request.user, pk=request.POST['debit'])
+        form.fields['credit'].queryset = Account.objects.filter(user=request.user, pk=request.POST['credit'])
 
         if form.is_valid():
             transaction = Transaction()

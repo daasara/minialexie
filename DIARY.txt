@@ -1,0 +1,6 @@
+24.nov.16
+
+A few days ago I initially worked on Transactions first. The Transaction Form is most verbose, and because amount is an IntegerField, I need a CharField to convert back and forth between amounts in cents or in whole amounts (dollars and cents).
+
+ModelForms do all the work for you.
+

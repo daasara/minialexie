@@ -5,3 +5,11 @@ Look for FIXMEs
 Delete should be a method in the model
 
 filter to display {{ transaction.amount }} as whole amount, dot and cents 
+
+checkboxes for transactions to delete several at once
+
+Static URL for CSS
+
+Reorder AccountTypes in index in any order (need a new field), drag and drop
+
+Pop-up for creating new accounts within Create Transaction, like Admin
