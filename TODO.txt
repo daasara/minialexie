@@ -1,10 +1,4 @@
-Setting and remembering from/to dates: GET parameters in URL or store in session?
-
 Look for FIXMEs
-
-Delete should be a method in the model
-
-filter to display {{ transaction.amount }} as whole amount, dot and cents 
 
 checkboxes for transactions to delete several at once
 
@@ -14,7 +8,13 @@ Reorder AccountTypes in index in any order (need a new field), drag and drop in 
 
 Pop-up for creating new accounts within Create Transaction, like Admin
 
-
-Benny
-=====
 When moving accounts to another type, its 'order' must be placed last
+
+Resolved
+========
+
+filter to display {{ transaction.amount }} as whole amount, dot and cents - IN BENNY, AMOUNT IS A DECIMAL
+
+Delete should be a method in the model - A FUNCTION IN VIEW
+
+Setting and remembering from/to dates: GET parameters in URL or store in session? - GET PARAMETERS IN URL, CAN BE BOOKMARKED
