@@ -1,0 +1,11 @@
+{% extends "benny/base.html" %}
+{% block title %}Transaction - Create{% endblock %}
+
+{% block content %}
+<h1>Transaction - Create</h1>
+
+<form action="{% url 'benny:transactionSaveCreate' %}" method="POST">
+    {% csrf_token %}
+    {% include 'benny/modelForm.html' %}
+</form>
+{% endblock %}

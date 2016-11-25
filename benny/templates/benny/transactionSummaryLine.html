@@ -1,3 +1,5 @@
 <p>
-    <a href="{% url 'benny:transactionUpdate' transaction.id %}">{{ transaction }}</a>
+    {{ transaction }}
+    <a href="{% url 'benny:transactionUpdate' transaction.id %}">(edit)</a>
+    <a href="{% url 'benny:transactionConfirmDelete' transaction.id %}">(delete)</a>
 </p>

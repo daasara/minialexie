@@ -44,7 +44,7 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=22, decimal_places=2)
     debit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="debit_transactions")
     credit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="credit_transactions")
-    date = models.DateField("Date of transaction", default=datetime.date.today)
+    date = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return "%s %s %s %s/%s" % (self.date, self.description, self.amount, self.debit, self.credit)

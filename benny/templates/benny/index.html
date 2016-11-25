@@ -5,7 +5,7 @@
 
 {% for accountType in accountTypes %}
 <div style="float: left; padding: 20px;">
-    <a href="{% url 'benny:accountTypeRead' accountType.id %}">{{ accountType.name }}</a>
+    <a href="{% url 'benny:accountTypeRead' accountType.id %}"><span class="accountTypeName">{{ accountType.name }}</span></a>
     {% for account in accountType.accountSummaries %}
     <p>
         {% include 'benny/accountSummaryLine.html' %}

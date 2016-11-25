@@ -13,4 +13,6 @@ class AccountForm(ModelForm):
         fields = ['accountType', 'name', 'budget']
 
 class TransactionForm(ModelForm):
-    pass
+    class Meta:
+        model = Transaction
+        fields = ['description', 'amount', 'debit', 'credit', 'date']

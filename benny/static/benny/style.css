@@ -1,4 +1,18 @@
+.accountTypeName {
+    font-weight: bold;
+}
+
 .indexAccountType {
     float: left;
     padding: 25px;
+}
+
+.modelTable {
+    background-color: #ffc;
+    border: 2px solid #995;
+    padding: 12px;
+}
+
+.modelTable th {
+    text-align: left;
 }

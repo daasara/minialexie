@@ -98,7 +98,7 @@ def accountTypeSaveCreate(request):
 
 def accountTypeRead(request, id):
     # https://docs.djangoproject.com/en/1.10/intro/tutorial04/
-    # in 'objects.get', pass pk=id as search criteria
+    # in 'objects.get', use pk=id as search criteria
     accountType = AccountType.objects.get(user=request.user, pk=id)
     
     accounts = Account.objects.filter(user=request.user, accountType=accountType).order_by('order', 'name')
@@ -128,7 +128,7 @@ def accountTypeConfirmDelete(request, id):
     prevUrl = request.GET.get('prev', reverse('benny:accountTypeRead', kwargs={'id': id}))
     nextUrl = reverse('benny:accountTypeDelete', kwargs={'id': id}) + "?next=" + prevUrl
     if not is_safe_url(prevUrl):
-        prev = reverse('benny:accountTypeRead', kwargs={'id': id})
+        prevUrl = reverse('benny:accountTypeRead', kwargs={'id': id})
     return render(request, 'benny/accountTypeConfirmDelete.html',
                   {'accountType': accountType,
                    'prevUrl': prevUrl,
@@ -147,8 +147,7 @@ def accountCreate(request):
     form = AccountForm()
     # Show only user's account types
     form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user)
-    return render(request, 'benny/accountCreate.html',
-                  {'form': form})
+    return render(request, 'benny/accountCreate.html', {'form': form})
 
 def accountSaveCreate(request):
     if request.method == "POST":
@@ -197,6 +196,7 @@ def accountSaveUpdate(request, id):
         form = AccountForm(request.POST)
         if form.is_valid():
             accountType = AccountType.objects.get(user=request.user, pk=form.cleaned_data['accountType'].id)
+            
             account = Account.objects.get(user=request.user, pk=id)
             account.accountType = accountType
             account.name = form.cleaned_data['name']
@@ -209,7 +209,7 @@ def accountConfirmDelete(request, id):
     prevUrl = request.GET.get('prev', reverse('benny:accountRead', kwargs={'id': id}))
     nextUrl = reverse('benny:accountDelete', kwargs={'id': id}) + "?next=" + prevUrl
     if not is_safe_url(prevUrl):
-        prev = reverse('benny:accountRead', kwargs={'id': id})
+        prevUrl = reverse('benny:accountRead', kwargs={'id': id})
     return render(request, 'benny/accountConfirmDelete.html',
                   {'account': account,
                    'prevUrl': prevUrl,
@@ -225,25 +225,73 @@ def accountDelete(request, id):
 ###############
 
 def transactionCreate(request):
-    pass
+    form = TransactionForm()
+    userAccounts = Account.objects.filter(user=request.user)
+    form.fields['debit'].queryset = userAccounts
+    form.fields['credit'].queryset = userAccounts
+    return render(request, 'benny/transactionCreate.html', {'form': form})
 
 def transactionSaveCreate(request):
-    pass
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            debit = Account.objects.get(user=request.user, pk=form.cleaned_data['debit'].id)
+            credit = Account.objects.get(user=request.user, pk=form.cleaned_data['credit'].id)
+
+            transaction = Transaction()
+            transaction.user = request.user
+            transaction.description = form.cleaned_data['description']
+            transaction.amount = form.cleaned_data['amount']
+            transaction.debit = debit
+            transaction.credit = credit
+            transaction.date = form.cleaned_data['date']
+            transaction.save()
+            return redirect(reverse('benny:transactionRead', kwargs={'id': transaction.id}))
+    return redirect(reverse('benny:index'))
 
 def transactionRead(request, id):
-    pass
+    transaction = Transaction.objects.get(user=request.user, pk=id)
+    return render(request, 'benny/transactionRead.html', {'transaction': transaction})
 
 def transactionUpdate(request, id):
-    pass
+    transaction = Transaction.objects.get(user=request.user, pk=id)
+    form = TransactionForm(instance=transaction)
+    userAccounts = Account.objects.filter(user=request.user)
+    form.fields['debit'].queryset = userAccounts
+    form.fields['credit'].queryset = userAccounts
+    return render(request, 'benny/transactionUpdate.html', {'id': id, 'form': form})
 
 def transactionSaveUpdate(request, id):
-    pass
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            debit = Account.objects.get(user=request.user, pk=form.cleaned_data['debit'].id)
+            credit = Account.objects.get(user=request.user, pk=form.cleaned_data['credit'].id)
+            
+            transaction = Transaction.objects.get(user=request.user, pk=id)
+            transaction.description = form.cleaned_data['description']
+            transaction.amount = form.cleaned_data['amount']
+            transaction.debit = debit
+            transaction.credit = credit
+            transaction.date = form.cleaned_data['date']
+            transaction.save()
+    return redirect(reverse('benny:transactionRead', kwargs={'id': id}))
 
 def transactionConfirmDelete(request, id):
-    pass
+    transaction = Transaction.objects.get(user=request.user, pk=id)
+    prevUrl = request.GET.get('prev', reverse('benny:transactionRead', kwargs={'id': id}))
+    nextUrl = reverse('benny:transactionDelete', kwargs={'id': id}) + "?next=" + prevUrl
+    if not is_safe_url(prevUrl):
+        prevUrl = reverse('benny:transactionRead', kwargs={'id': id})
+    return render(request, 'benny/transactionConfirmDelete.html',
+                  {'transaction': transaction,
+                   'prevUrl': prevUrl,
+                   'nextUrl': nextUrl})
 
 def transactionDelete(request, id):
-    pass
+    transaction = Transaction.objects.get(user=request.user, pk=id)
+    transaction.delete()
+    return redirect(reverse('benny:index'))
 
 def transactionBulkDelete(request):
     # request.GET.getlist()

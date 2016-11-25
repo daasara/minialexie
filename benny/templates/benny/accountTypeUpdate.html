@@ -5,7 +5,6 @@
 <h1>Account Type - Update</h1>
 <form action="{% url 'benny:accountTypeSaveUpdate' id %}" method="POST">
     {% csrf_token %}
-    {{ form.as_ul }}
-    <input type="submit">
+    {% include 'benny/modelForm.html' %}
 </form>
 {% endblock %}
