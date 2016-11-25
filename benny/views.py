@@ -65,11 +65,11 @@ def index(request):
 #               AccountType   Account    Transaction
 #        create     done       done
 #    saveCreate     done       done
-#          read     done
-#        update     done
-#    saveUpdate     done
-# confirmDelete     done
-#        delete     done
+#          read     done       done
+#        update     done       done
+#    saveUpdate     done       done
+# confirmDelete     done       done
+#        delete     done       done
 #    bulkDelete    ( not available )    via checkboxes
 
 ###############
@@ -124,6 +124,7 @@ def accountTypeSaveUpdate(request, id):
 
 def accountTypeConfirmDelete(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
+    # if the GET parameter 'prev' is not set, send back to accountTypeRead
     prevUrl = request.GET.get('prev', reverse('benny:accountTypeRead', kwargs={'id': id}))
     nextUrl = reverse('benny:accountTypeDelete', kwargs={'id': id}) + "?next=" + prevUrl
     if not is_safe_url(prevUrl):
@@ -153,6 +154,7 @@ def accountSaveCreate(request):
     if request.method == "POST":
         form = AccountForm(request.POST)
         if form.is_valid():
+            # restrict to object belonging to user
             accountType = AccountType.objects.get(user=request.user, pk=form.cleaned_data['accountType'].id)
             
             account = Account()
@@ -185,16 +187,38 @@ def accountRead(request, id):
                    'transactions': transactions})
 
 def accountUpdate(request, id):
-    pass
+    account = Account.objects.get(user=request.user, pk=id)
+    form = AccountForm(instance=account)
+    form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user)
+    return render(request, 'benny/accountUpdate.html', {'id': id, 'form': form})
 
 def accountSaveUpdate(request, id):
-    pass
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            accountType = AccountType.objects.get(user=request.user, pk=form.cleaned_data['accountType'].id)
+            account = Account.objects.get(user=request.user, pk=id)
+            account.accountType = accountType
+            account.name = form.cleaned_data['name']
+            account.budget = form.cleaned_data['budget']
+            account.save()
+    return redirect(reverse('benny:accountRead', kwargs={'id': id}))
 
 def accountConfirmDelete(request, id):
-    pass
+    account = Account.objects.get(user=request.user, pk=id)
+    prevUrl = request.GET.get('prev', reverse('benny:accountRead', kwargs={'id': id}))
+    nextUrl = reverse('benny:accountDelete', kwargs={'id': id}) + "?next=" + prevUrl
+    if not is_safe_url(prevUrl):
+        prev = reverse('benny:accountRead', kwargs={'id': id})
+    return render(request, 'benny/accountConfirmDelete.html',
+                  {'account': account,
+                   'prevUrl': prevUrl,
+                   'nextUrl': nextUrl})
 
 def accountDelete(request, id):
-    pass
+    account = Account.objects.get(user=request.user, pk=id)
+    account.delete()
+    return redirect(reverse('benny:index'))
 
 ###############
 # Transaction #

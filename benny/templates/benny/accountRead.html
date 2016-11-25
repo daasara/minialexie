@@ -7,7 +7,7 @@
     Parent Account Type: <a href="{% url 'benny:accountTypeRead' account.accountType.id %}">({{ account.accountType }})</a>
 </p>
 
-{{ account.name }} FIXME (edit) (delete)
+{{ account.name }} <a href="{% url 'benny:accountUpdate' account.id %}">(edit)</a> <a href="{% url 'benny:accountConfirmDelete' account.id %}">(delete)</a>
 
 {% for transaction in transactions %}
 {% include 'benny/transactionSummaryLine.html' %}

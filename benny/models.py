@@ -17,7 +17,7 @@ class AccountType(models.Model):
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    accountType = models.ForeignKey(AccountType, on_delete=models.SET_NULL, blank=True, null=True)
+    accountType = models.ForeignKey(AccountType, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     budget = models.DecimalField(max_digits=22, decimal_places=2, default=Decimal(0))
 
@@ -42,8 +42,8 @@ class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     amount = models.DecimalField(max_digits=22, decimal_places=2)
-    debit = models.ForeignKey(Account, on_delete=models.SET_NULL, blank=True, null=True, related_name="debit_transactions")
-    credit = models.ForeignKey(Account, on_delete=models.SET_NULL, blank=True, null=True, related_name="credit_transactions")
+    debit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="debit_transactions")
+    credit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="credit_transactions")
     date = models.DateField("Date of transaction", default=datetime.date.today)
 
     def __str__(self):

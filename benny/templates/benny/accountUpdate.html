@@ -1,0 +1,13 @@
+{% extends "benny/base.html" %}
+{% block title %}Account - Update{% endblock %}
+
+{% block content %}
+<h1>Account - Update</h1>
+
+<form action="{% url 'benny:accountSaveUpdate' id %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit">
+</form>
+
+{% endblock %}
