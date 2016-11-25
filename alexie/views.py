@@ -99,7 +99,7 @@ def accountTypeConfirmDelete(request, pk):
     pass
     
 def accountTypeDelete(request, pk):
-    # FIXME Copy code in transactionDelete
+    # Copy code in transactionDelete
     accountType = AccountType.objects.get(user=request.user, pk=pk)
     accountType.delete()
     return HttpResponseRedirect(reverse('alexie:index'))
@@ -250,7 +250,7 @@ def transactionDelete(request, pk):
     next = request.GET.get('next', reverse('alexie:index'))
     transaction = Transaction.objects.get(user=request.user, pk=pk)
     transaction.delete()
-    # FIXME Redirect to previous page, most likely account view but could also be transactionRead
+    # Redirect to previous page, most likely account view but could also be transactionRead
     if not is_safe_url(next):
         next = reverse('alexie:index')
     return HttpResponseRedirect(next)
