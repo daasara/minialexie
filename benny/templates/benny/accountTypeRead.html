@@ -1,0 +1,9 @@
+{% extends "benny/base.html" %}
+{% block title %}Account Type - Read{% endblock %}
+
+{% block content %}
+<h1>Account Type - Read</h1>
+{{ accountType.name }} <a href="{% url 'benny:accountTypeUpdate' accountType.id %}">(edit)</a>
+
+FIXME Add list of accounts under this AccountType
+{% endblock %}

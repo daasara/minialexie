@@ -34,3 +34,13 @@ Rewrote index, no need for templatetags like alexie's index
 Compute balances in time period in view, because we cannot call functions with arguments in the template 
 
 Compute percentage spent in view, display as a fraction, like Alexie Beans
+
+24.nov.16 night (Ubuntu)
+
+Copied URLs from alexie to benny and stubbed views (defined function names and added 'pass' only)
+
+Copied base.html from alexie to benny
+
+Created AccountType Create, Update, and related Save views
+
+reverse can take arguments as kwargs (see accountTypeSaveUpdate)

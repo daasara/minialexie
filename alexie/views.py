@@ -39,7 +39,7 @@ def index(request):
                     'account_names': account_names,
                     'account_balances': account_balances })
 
-# For every model, there are seven functions
+# For every model, there are eight functions
 
 #               AccountType   Account    Transaction
 #        create     done       done         done

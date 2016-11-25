@@ -1,8 +1,10 @@
 from math import ceil
 
-from django.shortcuts import render
+from django.urls import reverse
+from django.shortcuts import render, redirect
 
 from .models import AccountType, Account, Transaction
+from .forms import AccountTypeForm, AccountForm, TransactionForm
 from .util import parse_from_date, parse_to_date
 
 def index(request):
@@ -42,3 +44,112 @@ def index(request):
 
     return render(request, 'benny/index.html',
                   { 'accountTypes': accountTypes })
+
+# For every model, there are up to eight functions
+
+#               AccountType   Account    Transaction
+#        create     done
+#    saveCreate     done
+#          read         
+#        update  
+#    saveUpdate  
+# confirmDelete  
+#        delete  
+#    bulkDelete    ( not available )    via checkboxes
+
+def accountTypeCreate(request):
+    form = AccountTypeForm()
+    return render(request, 'benny/accountTypeCreate.html',
+                  { 'form': form })
+
+def accountTypeSaveCreate(request):
+    if request.method == "POST":
+        form = AccountTypeForm(request.POST)
+        if form.is_valid():
+            accountType = AccountType()
+            accountType.user = request.user
+            accountType.name = form.cleaned_data['name']
+            accountType.order = AccountType.objects.count() + 1
+            formSign = form.cleaned_data['sign']
+            if formSign == 0:
+                accountType.sign = 1
+            else:
+                formSign = form.cleaned_data['sign']
+                accountType.sign = round(formSign / abs(formSign))  
+            accountType.save()
+    return redirect(reverse('benny:accountTypeCreate'))
+
+def accountTypeRead(request, id):
+    accountType = AccountType.objects.get(user=request.user, pk=id)
+    return render(request, 'benny/accountTypeRead.html', { 'accountType': accountType })
+
+def accountTypeUpdate(request, id):
+    accountType = AccountType.objects.get(user=request.user, pk=id)
+    form = AccountTypeForm(instance=accountType)
+    return render(request, 'benny/accountTypeUpdate.html', { 'form': form, 'id': id })
+
+def accountTypeSaveUpdate(request, id):
+    if request.method == "POST":
+        form = AccountTypeForm(request.POST)
+        if form.is_valid():
+            accountType = AccountType.objects.get(user=request.user, pk=id)
+            accountType.name = form.cleaned_data['name']
+            formSign = form.cleaned_data['sign']
+            if formSign == 0:
+                accountType.sign = 1
+            else:
+                accountType.sign = round(formSign / abs(formSign))
+            accountType.save()
+    return redirect(reverse('benny:accountTypeRead', kwargs={ 'id': id }))
+
+def accountTypeConfirmDelete(request, id):
+    pass
+
+def accountTypeDelete(request, id):
+    pass
+
+def accountCreate(request):
+    pass
+
+def accountSaveCreate(request):
+    pass
+
+def accountRead(request, id):
+    pass
+
+def accountUpdate(request, id):
+    pass
+
+def accountSaveUpdate(request, id):
+    pass
+
+def accountConfirmDelete(request, id):
+    pass
+
+def accountDelete(request, id):
+    pass
+
+def transactionCreate(request):
+    pass
+
+def transactionSaveCreate(request):
+    pass
+
+def transactionRead(request, id):
+    pass
+
+def transactionUpdate(request, id):
+    pass
+
+def transactionSaveUpdate(request, id):
+    pass
+
+def transactionConfirmDelete(request, id):
+    pass
+
+def transactionDelete(request, id):
+    pass
+
+def transactionBulkDelete(request):
+    # get list
+    pass

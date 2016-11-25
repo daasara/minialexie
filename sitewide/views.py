@@ -10,7 +10,7 @@ def index(request):
     <a href="/admin/">Admin</a>
 
     
-    <a href="/alexie/">Alexie</a>
+    <a href="/benny/">Benny</a>
     
     """)
 

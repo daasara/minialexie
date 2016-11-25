@@ -1,10 +1,11 @@
-<div>
-    Benny Home
-</div>
+{% extends 'benny/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
 
 {% for accountType in accountTypes %}
 <div style="float: left; padding: 20px;">
-    {{ accountType.name }}
+    <a href="{% url 'benny:accountTypeRead' accountType.id %}">{{ accountType.name }}</a>
     {% for account in accountType.accountSummaries %}
     <p>
         {{ account.name }} {{ account.datesBalance }} / {{ account.budget }} {{ account.percentSpent }}
@@ -12,3 +13,5 @@
     {% endfor %}
 </div>
 {% endfor %}
+
+{% endblock %}
