@@ -46,16 +46,20 @@ def index(request):
                   { 'accountTypes': accountTypes })
 
 # For every model, there are up to eight functions
-
+#
 #               AccountType   Account    Transaction
 #        create     done
 #    saveCreate     done
-#          read         
-#        update  
-#    saveUpdate  
+#          read     done
+#        update     done
+#    saveUpdate     done
 # confirmDelete  
 #        delete  
 #    bulkDelete    ( not available )    via checkboxes
+
+###############
+# AccountType #
+###############
 
 def accountTypeCreate(request):
     form = AccountTypeForm()
@@ -108,6 +112,10 @@ def accountTypeConfirmDelete(request, id):
 def accountTypeDelete(request, id):
     pass
 
+###########
+# Account #
+###########
+
 def accountCreate(request):
     pass
 
@@ -128,6 +136,10 @@ def accountConfirmDelete(request, id):
 
 def accountDelete(request, id):
     pass
+
+###############
+# Transaction #
+###############
 
 def transactionCreate(request):
     pass

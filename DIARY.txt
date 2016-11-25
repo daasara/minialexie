@@ -44,3 +44,5 @@ Copied base.html from alexie to benny
 Created AccountType Create, Update, and related Save views
 
 reverse can take arguments as kwargs (see accountTypeSaveUpdate)
+
+Copied and updated progress table in views.py
