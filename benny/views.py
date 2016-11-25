@@ -70,7 +70,7 @@ def index(request):
 #    saveUpdate     done       done
 # confirmDelete     done       done
 #        delete     done       done
-#    bulkDelete    ( not available )    via checkboxes
+#    bulkDelete    ( not available )    
 
 ###############
 # AccountType #
@@ -293,6 +293,10 @@ def transactionDelete(request, id):
     transaction.delete()
     return redirect(reverse('benny:index'))
 
+def transactionConfirmBulkDelete(request):
+    # use checkboxes in accountRead, send to ConfirmBulkDelete, then to BulkDelete
+    # use request.GET.getlist()
+    pass
+    
 def transactionBulkDelete(request):
-    # request.GET.getlist()
     pass
