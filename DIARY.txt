@@ -35,7 +35,7 @@ Compute balances in time period in view, because we cannot call functions with a
 
 Compute percentage spent in view, display as a fraction, like Alexie Beans
 
-24.nov.16 night (Ubuntu)
+* 24.nov.16 night (Ubuntu)
 
 Copied URLs from alexie to benny and stubbed views (defined function names and added 'pass' only)
 
