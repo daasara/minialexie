@@ -19,9 +19,9 @@ def typicalSetup(t):
     t.income.save()
     t.expenses.save()
 
-    t.wallet = Account(user=t.user, account_type=t.assets, name="Wallet", budget=0, order=1)
-    t.salary = Account(user=t.user, account_type=t.income, name="Salary", budget=0, order=1)
-    t.groceries = Account(user=t.user, account_type=t.expenses, name="Groceries", budget=500, order=1)
+    t.wallet = Account(user=t.user, accountType=t.assets, name="Wallet", budget=0, order=1)
+    t.salary = Account(user=t.user, accountType=t.income, name="Salary", budget=0, order=1)
+    t.groceries = Account(user=t.user, accountType=t.expenses, name="Groceries", budget=500, order=1)
 
     t.wallet.save()
     t.salary.save()

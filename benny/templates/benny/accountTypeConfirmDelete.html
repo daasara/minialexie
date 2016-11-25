@@ -1,0 +1,14 @@
+{% extends "benny/base.html" %}
+{% block title %}Account Type - Confirm Delete{% endblock %}
+
+{% block content %}
+<h1>Delete {{ accountType.name }}?</h1>
+
+<p>
+Are you sure?
+</p>
+
+<p><a href="{{ nextUrl }}">Yes</a></p>
+
+<p><a href="{{ prevUrl }}">No, go back</a></p>
+{% endblock %}

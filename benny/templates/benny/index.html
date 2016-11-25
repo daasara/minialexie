@@ -8,7 +8,7 @@
     <a href="{% url 'benny:accountTypeRead' accountType.id %}">{{ accountType.name }}</a>
     {% for account in accountType.accountSummaries %}
     <p>
-        {{ account.name }} {{ account.datesBalance }} / {{ account.budget }} {{ account.percentSpent }}
+        {% include 'benny/accountSummaryLine.html' %}
     </p>
     {% endfor %}
 </div>

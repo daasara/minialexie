@@ -2,8 +2,6 @@ Look for FIXMEs
 
 checkboxes for transactions to delete several at once
 
-Static URL for CSS
-
 Reorder AccountTypes in index in any order (need a new field), drag and drop in right order, reorder accounts in any order (use jQuery UI Sortable)
 
 Pop-up for creating new accounts within Create Transaction, like Admin

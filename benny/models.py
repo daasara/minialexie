@@ -17,7 +17,7 @@ class AccountType(models.Model):
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account_type = models.ForeignKey(AccountType, on_delete=models.SET_NULL, blank=True, null=True)
+    accountType = models.ForeignKey(AccountType, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=100)
     budget = models.DecimalField(max_digits=22, decimal_places=2, default=Decimal(0))
 
@@ -30,9 +30,9 @@ class Account(models.Model):
         credit_transactions = self.credit_transactions.filter(date__gte=from_date, date__lte=to_date)
 
         for debit in debit_transactions:
-            total += self.account_type.sign * debit.amount
+            total += self.accountType.sign * debit.amount
         for credit in credit_transactions:
-            total -= self.account_type.sign * credit.amount
+            total -= self.accountType.sign * credit.amount
         return total
 
     def __str__(self):
