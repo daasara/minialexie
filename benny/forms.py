@@ -8,7 +8,9 @@ class AccountTypeForm(ModelForm):
         fields = ['name', 'sign']
 
 class AccountForm(ModelForm):
-    pass
+    class Meta:
+        model = Account
+        fields = ['accountType', 'name', 'budget']
 
 class TransactionForm(ModelForm):
     pass

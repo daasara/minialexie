@@ -1,0 +1,16 @@
+{% extends "benny/base.html" %}
+{% block title %}Account - Read{% endblock %}
+
+{% block content %}
+<h1>Account - Read</h1>
+<p>
+    Parent Account Type: <a href="{% url 'benny:accountTypeRead' account.accountType.id %}">({{ account.accountType }})</a>
+</p>
+
+{{ account.name }} FIXME (edit) (delete)
+
+{% for transaction in transactions %}
+{% include 'benny/transactionSummaryLine.html' %}
+{% endfor %}
+
+{% endblock %}

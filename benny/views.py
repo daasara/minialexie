@@ -19,10 +19,11 @@ def summarizeAccounts(accounts, from_date, to_date):
         else:
             percentSpent = 0
         accountSummaries.append(
-            { 'name': account.name,
-              'budget': budget,
-              'datesBalance': datesBalance,
-              'percentSpent': percentSpent, })
+            {'id': account.id,
+             'name': account.name,
+             'budget': budget,
+             'datesBalance': datesBalance,
+             'percentSpent': percentSpent})
     return accountSummaries
 
 def parseAccountTypeSign(value):
@@ -31,7 +32,14 @@ def parseAccountTypeSign(value):
         return 1
     else:
         return round(value / abs(value))
-    
+
+def nextOrderIndex(model, user):
+    objects = model.objects.filter(user=user)
+    if not objects:
+        return 1
+    else:
+        return objects.aggregate(Max('order'))['order__max'] + 1
+        
 def index(request):
     """
     Display all account balances in the selected time period.
@@ -50,13 +58,13 @@ def index(request):
         accountType.accountSummaries = summarizeAccounts(accountTypeAccounts, parse_from_date(request), parse_to_date(request))
 
     return render(request, 'benny/index.html',
-                  { 'accountTypes': accountTypes })
+                  {'accountTypes': accountTypes})
 
 # For every model, there are up to eight functions
 #
 #               AccountType   Account    Transaction
-#        create     done
-#    saveCreate     done
+#        create     done       done
+#    saveCreate     done       done
 #          read     done
 #        update     done
 #    saveUpdate     done
@@ -71,7 +79,7 @@ def index(request):
 def accountTypeCreate(request):
     form = AccountTypeForm()
     return render(request, 'benny/accountTypeCreate.html',
-                  { 'form': form })
+                  {'form': form})
 
 def accountTypeSaveCreate(request):
     if request.method == "POST":
@@ -81,11 +89,11 @@ def accountTypeSaveCreate(request):
             accountType.user = request.user
             accountType.name = form.cleaned_data['name']
             # set new accountType's order to last place
-            accountType.order = AccountType.objects.all().aggregate(Max('order'))['order__max'] + 1
+            accountType.order = nextOrderIndex(AccountType, request.user)
             accountType.sign = parseAccountTypeSign(form.cleaned_data['sign'])
             accountType.save()
-            return redirect(reverse('benny:accountTypeRead', kwargs={ 'id': accountType.id }))
-    # something must have gone wrong
+            return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+    # if this point is reached, something must have gone wrong
     return redirect(reverse('benny:index'))
 
 def accountTypeRead(request, id):
@@ -96,13 +104,13 @@ def accountTypeRead(request, id):
     accounts = Account.objects.filter(user=request.user, accountType=accountType).order_by('order', 'name')
     accountSummaries = summarizeAccounts(accounts, parse_from_date(request), parse_to_date(request))
     return render(request, 'benny/accountTypeRead.html',
-                  { 'accountType': accountType,
-                    'accountSummaries': accountSummaries, })
+                  {'accountType': accountType,
+                   'accountSummaries': accountSummaries})
 
 def accountTypeUpdate(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
     form = AccountTypeForm(instance=accountType)
-    return render(request, 'benny/accountTypeUpdate.html', { 'form': form, 'id': id })
+    return render(request, 'benny/accountTypeUpdate.html', {'form': form, 'id': id})
 
 def accountTypeSaveUpdate(request, id):
     if request.method == "POST":
@@ -112,18 +120,18 @@ def accountTypeSaveUpdate(request, id):
             accountType.name = form.cleaned_data['name']
             accountType.sign = parseAccountTypeSign(form.cleaned_data['sign'])
             accountType.save()
-    return redirect(reverse('benny:accountTypeRead', kwargs={ 'id': id }))
+    return redirect(reverse('benny:accountTypeRead', kwargs={'id': id}))
 
 def accountTypeConfirmDelete(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
-    prevUrl = request.GET.get('prev', reverse('benny:accountTypeRead', kwargs={ 'id': id }))
-    nextUrl = reverse('benny:accountTypeDelete', kwargs={ 'id': id }) + "?next=" + prevUrl
+    prevUrl = request.GET.get('prev', reverse('benny:accountTypeRead', kwargs={'id': id}))
+    nextUrl = reverse('benny:accountTypeDelete', kwargs={'id': id}) + "?next=" + prevUrl
     if not is_safe_url(prevUrl):
-        prev = reverse('benny:accountTypeRead', kwargs={ 'id': id })
+        prev = reverse('benny:accountTypeRead', kwargs={'id': id})
     return render(request, 'benny/accountTypeConfirmDelete.html',
-                  { 'accountType': accountType,
-                    'prevUrl': prevUrl,
-                    'nextUrl': nextUrl, })
+                  {'accountType': accountType,
+                   'prevUrl': prevUrl,
+                   'nextUrl': nextUrl})
 
 def accountTypeDelete(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
@@ -135,13 +143,46 @@ def accountTypeDelete(request, id):
 ###########
 
 def accountCreate(request):
-    pass
+    form = AccountForm()
+    # Show only user's account types
+    form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user)
+    return render(request, 'benny/accountCreate.html',
+                  {'form': form})
 
 def accountSaveCreate(request):
-    pass
+    if request.method == "POST":
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            accountType = AccountType.objects.get(user=request.user, pk=form.cleaned_data['accountType'].id)
+            
+            account = Account()
+            account.user = request.user
+            account.accountType = accountType
+            account.name = form.cleaned_data['name']
+            account.budget = form.cleaned_data['budget']
+            account.order = nextOrderIndex(Account, request.user)
+            account.save()
+            return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+    # if this point is reached, something must have gone wrong
+    return redirect(reverse('benny:index'))
 
 def accountRead(request, id):
-    pass
+    account = Account.objects.get(user=request.user, pk=id)
+    from_date = parse_from_date(request)
+    to_date = parse_to_date(request)
+    
+    transactions = Transaction.objects.filter(
+        debit=account,
+        date__gte=from_date,
+        date__lte=to_date) | Transaction.objects.filter(
+            credit=account,
+            date__gte=from_date,
+            date__lte=to_date)
+    transactions = transactions.order_by('-date')
+
+    return render(request, 'benny/accountRead.html',
+                  {'account': account,
+                   'transactions': transactions})
 
 def accountUpdate(request, id):
     pass

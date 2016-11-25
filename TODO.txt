@@ -8,6 +8,7 @@ Pop-up for creating new accounts within Create Transaction, like Admin
 
 When moving accounts to another type, its 'order' must be placed last
 
+
 Resolved
 ========
 
@@ -16,3 +17,11 @@ filter to display {{ transaction.amount }} as whole amount, dot and cents - IN B
 Delete should be a method in the model - A FUNCTION IN VIEW
 
 Setting and remembering from/to dates: GET parameters in URL or store in session? - GET PARAMETERS IN URL, CAN BE BOOKMARKED
+
+
+Wishlist
+========
+
+Create account link from AccountType automatically selects the right choice from select box
+
+Use class-based views?
