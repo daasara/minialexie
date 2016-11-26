@@ -25,7 +25,7 @@ class Account(models.Model):
     order = models.IntegerField()
 
     def balance(self, from_date=datetime.date(1900, 1, 1), to_date=datetime.date(2100, 1, 1)):
-        total = Decimal(0)
+        total = Decimal('0.00')
         debit_transactions = self.debit_transactions.filter(date__gte=from_date, date__lte=to_date)
         credit_transactions = self.credit_transactions.filter(date__gte=from_date, date__lte=to_date)
 
