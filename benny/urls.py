@@ -45,4 +45,5 @@ urlpatterns = [
     url(r'^transaction/confirmDelete/(?P<id>[0-9]+)$', views.transactionConfirmDelete, name="transactionConfirmDelete"),
     url(r'^transaction/delete/(?P<id>[0-9]+)$', views.transactionDelete, name="transactionDelete"),
 
+    url(r'^changeDates/$', views.changeDates, name="changeDates"),
 ]

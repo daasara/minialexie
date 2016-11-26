@@ -106,3 +106,19 @@ h1 {
 .formLine {
     display: inline;
 }
+
+input[type=text], input[type=number] {
+    font-family: Lato;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #6a6;
+    padding: 3px;
+}
+
+input[type=submit] {
+    font-family: Lato;
+}
+
+option {
+    font-family: Lato;
+}

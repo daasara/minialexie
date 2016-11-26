@@ -11,22 +11,26 @@
 -->
 
 |
-<span class="small">
-    from
-
-    <form action="" class="formLine">
-        <input name="from" size="10">
-
-        to
-
-        <input name="to" size="10">
-
-        <input type="submit" value="go">
-    </form>
-</span>
-
 <a href="{% url 'benny:transactionCreate' %}" class="small"> + create transaction</a>
 
 |
 <a href="{% url 'logout' %}" class="small">logout</a>
+<br><br>
+<span class="small">
+    from
+
+    <form action="{% url 'benny:changeDates' %}" method="POST" class="formLine">
+        {% csrf_token %}
+        <input type="text" name="from" size="10" value="{{ request.session.fromDate }}">
+
+        to
+
+        <input type="text" name="to" size="10" value="{{ request.session.toDate }}">
+
+        <input type="hidden" name="prevUrl" value="{{ request.path }}">
+        <input type="submit" value="go">
+    </form>
+</span>
+
+
 <br><br>

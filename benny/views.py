@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from math import ceil
 
 from django.urls import reverse
@@ -7,7 +8,7 @@ from django.utils.http import is_safe_url
 
 from .models import AccountType, Account, Transaction
 from .forms import AccountTypeForm, AccountForm, TransactionForm
-from .util import parse_from_date, parse_to_date
+from .util import parse_from_date, parse_to_date, display_date
 
 def summarizeAccounts(accounts, from_date, to_date):
     accountSummaries = []
@@ -55,13 +56,17 @@ def index(request):
         accountTypeAccounts = Account.objects.filter(user=request.user, accountType=accountType.id).order_by('order', 'name')
 
         # retrieve balances here, using the parsed from and to dates
-        accountType.accountSummaries = summarizeAccounts(accountTypeAccounts, parse_from_date(request), parse_to_date(request))
+        fromDate = parse_from_date(request)
+        toDate = parse_to_date(request)
+        accountType.accountSummaries = summarizeAccounts(accountTypeAccounts, fromDate, toDate)
 
         # compute total for accountType
         accountType.total = sum([account['datesBalance'] for account in accountType.accountSummaries])
 
     return render(request, 'benny/index.html',
-                  {'accountTypes': accountTypes})
+                  {'accountTypes': accountTypes,
+                   'fromDate': display_date(fromDate),
+                   'toDate': display_date(toDate)})
 
 # For every model, there are up to eight functions
 #
@@ -311,3 +316,20 @@ def transactionConfirmBulkDelete(request):
     
 def transactionBulkDelete(request):
     pass
+
+def changeDates(request):
+    if request.method == "POST":
+        try:
+            fromDate = datetime.strptime(request.POST['from'], "%d/%m/%Y")
+        except ValueError:
+            fromDate = date(1900, 1, 1)
+        try:
+            toDate = datetime.strptime(request.POST['to'], "%d/%m/%Y")
+        except ValueError:
+            toDate = date(2100, 1, 1)
+        request.session['fromDate'] = display_date(fromDate)
+        request.session['toDate'] = display_date(toDate)
+        
+        if is_safe_url(request.POST['prevUrl']):
+            return redirect(request.POST['prevUrl'])
+    return redirect(reverse('benny:index'))
