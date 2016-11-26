@@ -1,3 +1,14 @@
-<a href="{% url 'benny:accountRead' account.id %}">{{ account.name }}</a>
-
-{{ account.datesBalance }} / {{ account.budget }} {{ account.percentSpent }}%
+<tr>
+    <td>
+        <a href="{% url 'benny:accountRead' account.id %}">{{ account.name }}</a>
+    </td>
+    <td class="amount">
+        {{ account.datesBalance }}
+    </td>
+    <td class="amount budget">
+        {{ account.budget }}
+    </td>
+    <td class="amount budget">
+        {{ account.percentSpent }}%
+    </td>
+</tr>

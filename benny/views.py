@@ -57,6 +57,9 @@ def index(request):
         # retrieve balances here, using the parsed from and to dates
         accountType.accountSummaries = summarizeAccounts(accountTypeAccounts, parse_from_date(request), parse_to_date(request))
 
+        # compute total for accountType
+        accountType.total = sum([account['datesBalance'] for account in accountType.accountSummaries])
+
     return render(request, 'benny/index.html',
                   {'accountTypes': accountTypes})
 
@@ -93,7 +96,8 @@ def accountTypeSaveCreate(request):
             accountType.order = nextOrderIndex(AccountType, request.user)
             accountType.sign = parseAccountTypeSign(form.cleaned_data['sign'])
             accountType.save()
-            return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+            # return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+            return redirect(reverse('benny:index'))
     # if this point is reached, something must have gone wrong
     return redirect(reverse('benny:index'))
 
@@ -121,7 +125,8 @@ def accountTypeSaveUpdate(request, id):
             accountType.name = form.cleaned_data['name']
             accountType.sign = parseAccountTypeSign(form.cleaned_data['sign'])
             accountType.save()
-    return redirect(reverse('benny:accountTypeRead', kwargs={'id': id}))
+    # return redirect(reverse('benny:accountTypeRead', kwargs={'id': id}))
+    return redirect(reverse('benny:index'))
 
 def accountTypeConfirmDelete(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
@@ -145,9 +150,13 @@ def accountTypeDelete(request, id):
 ###########
 
 def accountCreate(request):
-    form = AccountForm()
+    # try auto-selecting account type
+    accountTypeId = request.GET.get('accountType', "")
+
+    form = AccountForm(initial={'accountType': accountTypeId})
     # Show only user's account types
     form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user)
+
     return render(request, 'benny/accountCreate.html', {'form': form})
 
 def accountSaveCreate(request):
@@ -164,7 +173,8 @@ def accountSaveCreate(request):
             account.budget = form.cleaned_data['budget']
             account.order = nextOrderIndex(Account, request.user)
             account.save()
-            return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+            # return redirect(reverse('benny:accountTypeRead', kwargs={'id': accountType.id}))
+            return redirect(reverse('benny:index'))
     # if this point is reached, something must have gone wrong
     return redirect(reverse('benny:index'))
 

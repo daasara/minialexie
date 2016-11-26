@@ -1,3 +1,16 @@
+.accountTypeRow {
+    /* display: table; */
+}
+
+.accountTypeBlock {
+    display: inline-block;
+    padding: 5px 20px 5px 5px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    vertical-align: top;
+    border-left: 1px solid #9c9;
+}
+
 .accountTypeName {
     font-weight: bold;
 }
@@ -15,4 +28,32 @@
 
 .modelTable th {
     text-align: left;
+}
+
+.accountSummariesTable {
+    border-collapse: collapse;
+    /* border: 1px solid #99c; */
+}
+
+.accountSummariesTable tr td {
+    padding: 5px;
+    /* border: 1px solid #99c; */
+}
+
+.accountSummariesTable tr td.amount {
+    text-align: right;
+}
+
+.accountSummariesTable tr td.budget {
+    font-size: small;
+    text-align: right;
+}
+
+.accountSummariesTable tr td.label {
+    text-align: right;
+    font-size: small;
+}
+
+.accountSummariesTable tr td.total {
+    font-weight: bold;
 }

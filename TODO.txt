@@ -1,13 +1,6 @@
 Look for FIXMEs
 
-checkboxes for transactions to delete several at once
-
-Reorder AccountTypes in index in any order (need a new field), drag and drop in right order, reorder accounts in any order (use jQuery UI Sortable)
-
-Pop-up for creating new accounts within Create Transaction, like Admin
-
-When moving accounts to another type, its 'order' must be placed last
-
+add template filter for currency $1.200,34
 
 Resolved
 ========
@@ -24,4 +17,10 @@ Wishlist
 
 Create account link from AccountType automatically selects the right choice from select box
 
-Use class-based views?
+checkboxes for transactions to delete several at once
+
+Reorder AccountTypes in index in any order (need a new field), drag and drop in right order, reorder accounts in any order (use jQuery UI Sortable)
+
+When moving accounts to another type, its 'order' must be placed last
+
+Pop-up for creating new accounts within Create Transaction, like Admin

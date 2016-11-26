@@ -3,15 +3,39 @@
 
 {% block content %}
 
-{% for accountType in accountTypes %}
-<div style="float: left; padding: 20px;">
-    <a href="{% url 'benny:accountTypeRead' accountType.id %}"><span class="accountTypeName">{{ accountType.name }}</span></a>
-    {% for account in accountType.accountSummaries %}
-    <p>
-        {% include 'benny/accountSummaryLine.html' %}
-    </p>
+<div class="accountTypeRow">
+
+    {% for accountType in accountTypes %}
+    <div class="accountTypeBlock">
+        <!-- <a href="{% url 'benny:accountTypeRead' accountType.id %}"><span class="accountTypeName">{{ accountType.name }}</span></a> -->
+        <span class="accountTypeName">{{ accountType.name }}</span>
+        <a href="{% url 'benny:accountTypeUpdate' accountType.id %}">(edit)</a>
+        <a href="{% url 'benny:accountTypeConfirmDelete' accountType.id %}">(delete)</a>
+        
+        <p>
+            <a href="{% url 'benny:accountCreate' %}?accountType={{ accountType.id }}">(create new account)</a>
+        </p>
+        
+        <table class="accountSummariesTable">
+            {% for account in accountType.accountSummaries %}
+            {% include 'benny/accountSummaryLine.html' %}
+            {% endfor %}
+            <!-- account type total -->
+            <tr>
+                <td class="total">
+                    Total
+                </td>
+                <td class="amount total">
+                    {{ accountType.total }}
+                </td>
+            </tr>
+        </table>
+    </div>
     {% endfor %}
+
+    <div class="accountTypeBlock">
+        <a href="{% url 'benny:accountTypeCreate' %}">(create acct type)</a>
+    </div>
 </div>
-{% endfor %}
 
 {% endblock %}
