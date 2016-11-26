@@ -1,3 +1,4 @@
 MIT
 
 Borrows ideas from GNUCash
+Yanone Font from Google Fonts (see credits/OFL.txt)

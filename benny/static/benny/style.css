@@ -1,3 +1,25 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('Lato-Regular.ttf') format('truetype');
+    font-weight: medium;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('Lato-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+body {
+    font-family: 'Lato';
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
 .accountTypeRow {
     /* display: table; */
 }
@@ -23,7 +45,7 @@
 .modelTable {
     background-color: #ffc;
     border: 2px solid #995;
-    padding: 12px;
+    padding: 15px;
 }
 
 .modelTable th {
@@ -45,15 +67,19 @@
 }
 
 .accountSummariesTable tr td.budget {
-    font-size: small;
+    font-size: 14px;
     text-align: right;
 }
 
 .accountSummariesTable tr td.label {
+    font-size: 14px;
     text-align: right;
-    font-size: small;
 }
 
 .accountSummariesTable tr td.total {
     font-weight: bold;
+}
+
+.small {
+    font-size: 14px;
 }
