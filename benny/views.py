@@ -63,13 +63,14 @@ def index(request):
 # For every model, there are up to eight functions
 #
 #               AccountType   Account    Transaction
-#        create     done       done
-#    saveCreate     done       done
-#          read     done       done
-#        update     done       done
-#    saveUpdate     done       done
-# confirmDelete     done       done
-#        delete     done       done
+#        create     done       done         done
+#    saveCreate     done       done         done
+#          read     done       done         done
+#        update     done       done         done
+#    saveUpdate     done       done         done
+# confirmDelete     done       done         done
+#        delete     done       done         done
+# confirmBulkDl    ( not available ) 
 #    bulkDelete    ( not available )    
 
 ###############

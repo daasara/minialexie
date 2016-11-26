@@ -46,3 +46,18 @@ Created AccountType Create, Update, and related Save views
 reverse can take arguments as kwargs (see accountTypeSaveUpdate)
 
 Copied and updated progress table in views.py
+
+* 26.nov.16
+
+Created a new app "nov26" in alicedj for trying out class-based views
+
+Following the topic "Class-based views"
+https://docs.djangoproject.com/en/1.10/topics/class-based-views/
+
+List view can be restricted to user's objects within the view
+
+When editing the form in a CreateView, use form_class=None to avoid a TypeError "missing 1 required positional argument". It is also written like that in the documentation.
+
+https://docs.djangoproject.com/en/1.10/ref/class-based-views/mixins-editing/
+
+Added get_absolute_url to Account model
