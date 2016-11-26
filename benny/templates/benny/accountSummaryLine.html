@@ -1,12 +1,13 @@
+{% load humanize %}
 <tr>
     <td>
         <a href="{% url 'benny:accountRead' account.id %}">{{ account.name }}</a>
     </td>
     <td class="amount">
-        {{ account.datesBalance }}
+        {{ account.datesBalance|intcomma }}
     </td>
     <td class="amount budget">
-        {{ account.budget }}
+        {{ account.budget|intcomma }}
     </td>
     <td class="amount budget">
         {{ account.percentSpent }}%

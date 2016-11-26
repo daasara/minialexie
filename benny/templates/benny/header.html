@@ -1,14 +1,32 @@
-<a href="{% url 'benny:index' %}">Benny</a>
+<a href="{% url 'benny:index' %}">home</a>
+
+<!--
 |
-
-<!--
 <a href="{% url 'benny:accountTypeCreate' %}">Create Account Type</a>
-| -->
+-->
 
 <!--
+|
 <a href="{% url 'benny:accountCreate' %}">Create Account</a>
-| -->
+-->
 
-<a href="{% url 'benny:transactionCreate' %}">Create Transaction</a>
+|
+<span class="small">
+    from
 
+    <form action="" class="formLine">
+        <input name="from" size="10">
+
+        to
+
+        <input name="to" size="10">
+
+        <input type="submit" value="go">
+    </form>
+</span>
+
+<a href="{% url 'benny:transactionCreate' %}" class="small"> + create transaction</a>
+
+|
+<a href="{% url 'logout' %}" class="small">logout</a>
 <br><br>

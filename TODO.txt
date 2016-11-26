@@ -1,6 +1,8 @@
 Look for FIXMEs
 
-add template filter for currency $1.200,34
+From and To dates
+
+new transaction: debit Wallet | credit Wallet 
 
 Resolved
 ========

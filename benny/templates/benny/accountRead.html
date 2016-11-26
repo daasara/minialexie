@@ -2,15 +2,15 @@
 {% block title %}Account - Read{% endblock %}
 
 {% block content %}
-<h1>Account - Read</h1>
-<p>
-    Parent Account Type: <a href="{% url 'benny:accountTypeRead' account.accountType.id %}">({{ account.accountType }})</a>
-</p>
+<div class="accountTypeBlock">
+    {{ account.name }}
 
-{{ account.name }} <a href="{% url 'benny:accountUpdate' account.id %}">(edit)</a> <a href="{% url 'benny:accountConfirmDelete' account.id %}">(delete)</a>
+    <a href="{% url 'benny:accountUpdate' account.id %}" class="small">edit</a> | <a href="{% url 'benny:accountConfirmDelete' account.id %}" class="small">delete</a>
 
-{% for transaction in transactions %}
-{% include 'benny/transactionSummaryLine.html' %}
-{% endfor %}
+    {% for transaction in transactions %}
+    {% include 'benny/transactionSummaryLine.html' %}
+    {% endfor %}
+</div>
 
 {% endblock %}
+    

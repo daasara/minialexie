@@ -20,6 +20,26 @@ a {
     text-decoration: none;
 }
 
+a:link {
+    color: #364;
+}
+
+a:visited {
+    color: #364;
+}
+
+a:hover {
+    color: #6a6;
+}
+
+a:active {
+    color: #6a6;
+}
+
+h1 {
+    font-size: 18px;
+}
+
 .accountTypeRow {
     /* display: table; */
 }
@@ -43,8 +63,7 @@ a {
 }
 
 .modelTable {
-    background-color: #ffc;
-    border: 2px solid #995;
+    border-left: 1px solid #9c9;
     padding: 15px;
 }
 
@@ -82,4 +101,8 @@ a {
 
 .small {
     font-size: 14px;
+}
+
+.formLine {
+    display: inline;
 }

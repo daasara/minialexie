@@ -1,4 +1,5 @@
 {% extends 'benny/base.html' %}
+{% load humanize %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
@@ -13,7 +14,7 @@
         <a href="{% url 'benny:accountTypeConfirmDelete' accountType.id %}" class="small">delete</a>
         
         <p>
-            <a href="{% url 'benny:accountCreate' %}?accountType={{ accountType.id }}" class="small">create new account</a>
+            <a href="{% url 'benny:accountCreate' %}?accountType={{ accountType.id }}" class="small"> + create new account</a>
         </p>
         
         <table class="accountSummariesTable">
@@ -26,7 +27,7 @@
                     Total
                 </td>
                 <td class="amount total">
-                    {{ accountType.total }}
+                    {{ accountType.total|intcomma }}
                 </td>
             </tr>
         </table>
@@ -34,7 +35,7 @@
     {% endfor %}
 
     <div class="accountTypeBlock">
-        <a href="{% url 'benny:accountTypeCreate' %}" class="small">create account type</a>
+        <a href="{% url 'benny:accountTypeCreate' %}" class="small"> + create account type</a>
     </div>
 </div>
 
