@@ -1,31 +1,59 @@
-<a href="{% url 'benny:index' %}">home</a>
+<nav class="navbar navbar-default"> <!-- navbar-fixed-top"> -->
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="{% url 'benny:index' %}"><span class="glyphicon glyphicon-home"></span></a></li>
+            
+            <li class="dropdown"> <!-- user -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header">{{ request.user }}</li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </li> <!-- user dropdown -->
 
-|
-<a href="{% url 'logout' %}">logout</a>
+            <li class="dropdown"> <!-- new item -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'benny:accountTypeCreate' %}">New account type</a></li>
+                    <li><a href="{% url 'benny:accountCreate' %}">New account</a></li>
+                    <li><a href="{% url 'benny:transactionCreate' %}">New transaction</a></li>
+                </ul>
+            </a>
+            </li> <!-- new item dropdown -->
 
-<span class="small">({{ request.user }})</span>
+            <li class="dropdown"> <!-- calendar -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-calendar"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'benny:presetDate' %}?choice=today&prevUrl={{ request.path }}">Today</a></li>
+                    <li><a href="{% url 'benny:presetDate' %}?choice=month&prevUrl={{ request.path }}">This month</a></li>
+                    <li><a href="{% url 'benny:presetDate' %}?choice=year&prevUrl={{ request.path }}">This year</a></li>
+                    <li><a href="{% url 'benny:presetDate' %}?choice=all&prevUrl={{ request.path }}">All dates</a></li>
+                </ul>
+            </li> <!-- calendar dropdown -->
+            
+        </ul> <!-- nav navbar-nav -->
+     
+        <form action="{% url 'benny:changeDates' %}" method="POST" class="navbar-form navbar-left small">
+            {% csrf_token %}
 
-<br>
+            activity from
+            &nbsp;
+            <input type="text" name="from" size="10" value="{{ request.session.fromDate }}">
 
-<span class="small">
-    view transactions from
+            to
 
-    <form action="{% url 'benny:changeDates' %}" method="POST" class="formLine">
-        {% csrf_token %}
-        <input type="text" name="from" size="10" value="{{ request.session.fromDate }}">
+            <input type="text" name="to" size="10" value="{{ request.session.toDate }}">
 
-        to
+            <input type="hidden" name="prevUrl" value="{{ request.path }}">
+            <input type="submit" value="change">            
+        </form> <!-- changeDates -->
 
-        <input type="text" name="to" size="10" value="{{ request.session.toDate }}">
-
-        <input type="hidden" name="prevUrl" value="{{ request.path }}">
-        <input type="submit" value="update">
-    </form>
-
-    <br>
-
-    <a href="{% url 'benny:transactionCreate' %}" class="small"> + create new transaction</a>
-</span>
-
-
-<br><br>
+        <form action="{% url 'benny:search' %}" method="POST" class="navbar-form navbar-left small">
+            {% csrf_token %}
+            
+            <span class="glyphicon glyphicon-search"></span>
+            <input type="text" name="words" size="15">
+            <input type="submit" value="search">
+        </form>
+    </div>
+</nav>

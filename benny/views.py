@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from calendar import monthrange
 from math import ceil
 from decimal import Decimal
 
@@ -299,3 +300,30 @@ def changeDates(request):
         if is_safe_url(request.POST['prevUrl']):
             return redirect(request.POST['prevUrl'])
     return redirect(reverse('benny:index'))
+
+def presetDate(request):
+    if request.method == "GET":
+        choice = request.GET.get('choice', "allDates")
+        today = date.today()
+        if choice == "today":
+            request.session['fromDate'] = displayDate(today)
+            request.session['toDate'] = displayDate(today)
+        elif choice == "month":
+            monthDays = monthrange(today.year, today.month)
+            request.session['fromDate'] = displayDate(date(today.year, today.month, 1))
+            request.session['toDate'] = displayDate(date(today.year, today.month, monthDays[1]))
+        elif choice == "year":
+            request.session['fromDate'] = displayDate(date(today.year, 1, 1))
+            request.session['toDate'] = displayDate(date(today.year, 12, 31))
+        else:  # allDates
+            request.session['fromDate'] = displayDate(DEFAULT_FROM_DATE)
+            request.session['toDate'] = displayDate(DEFAULT_TO_DATE)
+    prevUrl = request.GET.get('prevUrl', reverse('benny:index'))
+    if is_safe_url(prevUrl):
+        return redirect(prevUrl)
+    else:
+        return redirect(reverse('benny:index'))
+    
+def search(request):
+    # render to account view
+    pass

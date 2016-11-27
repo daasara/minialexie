@@ -14,6 +14,11 @@
 body {
     font-family: 'Lato';
     font-size: 16px;
+    /* padding-top: 55px; */
+}
+
+#content {
+    padding-left: 10px;
 }
 
 a {
@@ -36,6 +41,22 @@ a:active {
     color: #6a6;
 }
 
+a:link.newItem {
+    color: #33b;
+}
+
+a:visited.newItem {
+    color: #33b;
+}
+
+a:hover.newItem {
+    color: #99c;
+}
+
+a:active.newItem {
+    color: #99c;
+}
+
 h1 {
     font-size: 18px;
 }
@@ -48,7 +69,7 @@ h1 {
     /* display: inline-block; */
     display: table-cell;
     padding: 5px 20px 5px 5px;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
     white-space: nowrap;
     vertical-align: top;
     border-left: 1px solid #9c9;
@@ -73,16 +94,25 @@ h1 {
 }
 
 .modelTable th {
+    /* border: 1px solid red; */
     text-align: left;
+    padding: 3px 10px;
+}
+
+.modelTable tr td {
+    /* border: 1px solid green; */
+    padding: 3px 10px;
 }
 
 .accountSummariesTable {
     border-collapse: collapse;
     /* border: 1px solid #99c; */
+    margin-top: 5px;
+    margin-left: 10px;
 }
 
 .accountSummariesTable tr td {
-    padding: 3px;
+    padding: 3px 10px 3px 0;
     /* border: 1px solid #99c; */
 }
 
@@ -130,4 +160,12 @@ input[type=submit] {
 
 select, option {
     font-family: Lato;
+}
+
+.newItem {
+    padding-left: 8px;
+}
+
+#spacer {
+    height: 100px;
 }

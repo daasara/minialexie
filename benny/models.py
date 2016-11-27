@@ -36,7 +36,7 @@ class AccountType(models.Model):
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    accountType = models.ForeignKey(AccountType, on_delete=models.CASCADE)
+    accountType = models.ForeignKey(AccountType, on_delete=models.CASCADE, verbose_name="Account type")
     name = models.CharField(max_length=100)
     budget = models.DecimalField(max_digits=22, decimal_places=2, default=Decimal(0))
 

@@ -1,12 +1,10 @@
 Look for FIXMEs
 
-new transaction: debit Wallet | credit Wallet 
-
-this month, all dates
-
-Create a table in accountRead template
+Create a table in accountRead template, compute total
 
 Pass a successUrl to transactionUpdate, so that after editing, redirect to successUrl
+
+Search
 
 Wishlist
 ========
@@ -20,8 +18,6 @@ Reorder accounts in any order (use jQuery UI Sortable)
 When moving accounts to another type, its 'order' must be placed last
 
 Pop-up for creating new accounts within Create Transaction, like Admin
-
-Search
 
 Resolved
 ========

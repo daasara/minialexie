@@ -4,14 +4,22 @@
     <head>
         <meta charset="utf-8">
         <title>Benny {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'benny/style.css' %}">
+        <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </head>
+    
+    {% include "benny/header.html" %}
     <body>
-        <div id="header">
-            {% include "benny/header.html" %}
-        </div>
         <div id="content">
             {% block content %}{% endblock %}
         </div>
+
+        <div id="footer">
+            {% block footer %}{% endblock %}
+        </div>
+
+        <div id="spacer"></div>
     </body>
 </html>
