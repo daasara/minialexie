@@ -1,5 +1,7 @@
 Look for FIXMEs
 
+Fill in bogus transactions for demoUser (at the end of models.py)
+
 Pass a successUrl to transactionUpdate, so that after editing, redirect to successUrl
 
 Create a table in accountRead template, compute total
