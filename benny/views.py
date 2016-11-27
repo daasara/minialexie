@@ -1,45 +1,16 @@
 from datetime import date, datetime
 from math import ceil
+from decimal import Decimal
 
 from django.urls import reverse
-from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
 from .models import AccountType, Account, Transaction
 from .forms import AccountTypeForm, AccountForm, TransactionForm
-from .util import parse_from_date, parse_to_date, display_date
-
-def summarizeAccounts(accounts, from_date, to_date):
-    accountSummaries = []
-    for account in accounts:
-        budget = account.budget
-        datesBalance = account.balance(from_date, to_date)
-        if budget > 0:
-            percentSpent = ceil(datesBalance / budget * 100)
-        else:
-            percentSpent = 0
-        accountSummaries.append(
-            {'id': account.id,
-             'name': account.name,
-             'budget': budget,
-             'datesBalance': datesBalance,
-             'percentSpent': percentSpent})
-    return accountSummaries
-
-def parseAccountTypeSign(value):
-    # Given a form's value, return +/-1
-    if value == 0:
-        return 1
-    else:
-        return round(value / abs(value))
-
-def nextOrderIndex(model, user):
-    objects = model.objects.filter(user=user)
-    if not objects:
-        return 1
-    else:
-        return objects.aggregate(Max('order'))['order__max'] + 1
+from .util import parseDate, parseFromDate, parseToDate, displayDate
+from .util import DEFAULT_FROM_DATE, DEFAULT_TO_DATE
+from .util import parseAccountTypeSign, nextOrderIndex
         
 def index(request):
     """
@@ -51,22 +22,21 @@ def index(request):
     accountTypes = AccountType.objects.filter(user=request.user).order_by('order', 'name')
 
     for accountType in accountTypes:
-        # use a temporary variable for current AccountType
-        # sort by order field then by name
-        accountTypeAccounts = Account.objects.filter(user=request.user, accountType=accountType.id).order_by('order', 'name')
-
         # retrieve balances here, using the parsed from and to dates
-        fromDate = parse_from_date(request)
-        toDate = parse_to_date(request)
-        accountType.accountSummaries = summarizeAccounts(accountTypeAccounts, fromDate, toDate)
+        fromDate = parseFromDate(request)
+        toDate = parseToDate(request)
+        accountType.accountSummaries = accountType.summarizeAccounts(fromDate, toDate)
 
         # compute total for accountType
-        accountType.total = sum([account['datesBalance'] for account in accountType.accountSummaries])
+        if len(accountType.accountSummaries) == 0:
+            accountType.total = Decimal("0.00")
+        else:
+            accountType.total = sum([account['datesBalance'] for account in accountType.accountSummaries])
 
     return render(request, 'benny/index.html',
                   {'accountTypes': accountTypes,
-                   'fromDate': display_date(fromDate),
-                   'toDate': display_date(toDate)})
+                   'fromDate': displayDate(fromDate),
+                   'toDate': displayDate(toDate)})
 
 # For every model, there are up to eight functions
 #
@@ -111,8 +81,8 @@ def accountTypeRead(request, id):
     # in 'objects.get', use pk=id as search criteria
     accountType = AccountType.objects.get(user=request.user, pk=id)
     
-    accounts = Account.objects.filter(user=request.user, accountType=accountType).order_by('order', 'name')
-    accountSummaries = summarizeAccounts(accounts, parse_from_date(request), parse_to_date(request))
+    accounts = Account.objects.filter(user=request.user, accountType=accountType).order_by('name')  # order alphabetically
+    accountSummaries = accountType.summarizeAccounts(parseFromDate(request), parseToDate(request))
     return render(request, 'benny/accountTypeRead.html',
                   {'accountType': accountType,
                    'accountSummaries': accountSummaries})
@@ -136,10 +106,10 @@ def accountTypeSaveUpdate(request, id):
 def accountTypeConfirmDelete(request, id):
     accountType = AccountType.objects.get(user=request.user, pk=id)
     # if the GET parameter 'prev' is not set, send back to accountTypeRead
-    prevUrl = request.GET.get('prev', reverse('benny:accountTypeRead', kwargs={'id': id}))
+    prevUrl = request.GET.get('prev', reverse('benny:index'))
     nextUrl = reverse('benny:accountTypeDelete', kwargs={'id': id}) + "?next=" + prevUrl
     if not is_safe_url(prevUrl):
-        prevUrl = reverse('benny:accountTypeRead', kwargs={'id': id})
+        prevUrl = reverse('benny:index')
     return render(request, 'benny/accountTypeConfirmDelete.html',
                   {'accountType': accountType,
                    'prevUrl': prevUrl,
@@ -160,7 +130,7 @@ def accountCreate(request):
 
     form = AccountForm(initial={'accountType': accountTypeId})
     # Show only user's account types
-    form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user)
+    form.fields['accountType'].queryset = AccountType.objects.filter(user=request.user).order_by('order', 'name')  # order by index
 
     return render(request, 'benny/accountCreate.html', {'form': form})
 
@@ -185,8 +155,8 @@ def accountSaveCreate(request):
 
 def accountRead(request, id):
     account = Account.objects.get(user=request.user, pk=id)
-    from_date = parse_from_date(request)
-    to_date = parse_to_date(request)
+    from_date = parseFromDate(request)
+    to_date = parseToDate(request)
     
     transactions = Transaction.objects.filter(
         debit=account,
@@ -242,7 +212,7 @@ def accountDelete(request, id):
 
 def transactionCreate(request):
     form = TransactionForm()
-    userAccounts = Account.objects.filter(user=request.user)
+    userAccounts = Account.objects.filter(user=request.user).order_by('name')
     form.fields['debit'].queryset = userAccounts
     form.fields['credit'].queryset = userAccounts
     return render(request, 'benny/transactionCreate.html', {'form': form})
@@ -319,16 +289,12 @@ def transactionBulkDelete(request):
 
 def changeDates(request):
     if request.method == "POST":
-        try:
-            fromDate = datetime.strptime(request.POST['from'], "%d/%m/%Y")
-        except ValueError:
-            fromDate = date(1900, 1, 1)
-        try:
-            toDate = datetime.strptime(request.POST['to'], "%d/%m/%Y")
-        except ValueError:
-            toDate = date(2100, 1, 1)
-        request.session['fromDate'] = display_date(fromDate)
-        request.session['toDate'] = display_date(toDate)
+        fromDate = parseDate(request.POST['from'], DEFAULT_FROM_DATE)
+        toDate = parseDate(request.POST['to'], DEFAULT_TO_DATE)
+
+        # save parsed dates to session data
+        request.session['fromDate'] = displayDate(fromDate)
+        request.session['toDate'] = displayDate(toDate)
         
         if is_safe_url(request.POST['prevUrl']):
             return redirect(request.POST['prevUrl'])

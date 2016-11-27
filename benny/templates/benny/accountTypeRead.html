@@ -2,7 +2,7 @@
 {% block title %}Account Type - Read{% endblock %}
 
 {% block content %}
-<h1>Account Type - Read</h1>
+
 {{ accountType.name }} <a href="{% url 'benny:accountTypeUpdate' accountType.id %}">(edit)</a> <a href="{% url 'benny:accountTypeConfirmDelete' accountType.id %}">(delete)</a>
 
 {% for account in accountSummaries %}

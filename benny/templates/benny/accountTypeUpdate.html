@@ -2,7 +2,7 @@
 {% block title %}Account Type - Update{% endblock %}
 
 {% block content %}
-<h1>Account Type - Update</h1>
+<h1>Edit account type</h1>
 <form action="{% url 'benny:accountTypeSaveUpdate' id %}" method="POST">
     {% csrf_token %}
     {% include 'benny/modelForm.html' %}

@@ -1,4 +1,5 @@
 import datetime
+from math import ceil
 from decimal import Decimal
 
 from django.db import models
@@ -12,8 +13,26 @@ class AccountType(models.Model):
     # used for left-to-right ordering in display (view)
     order = models.IntegerField()  
 
+    def summarizeAccounts(self, from_date=datetime.date(1900, 1, 1), to_date=datetime.date(2100, 1, 1)):
+        accountSummaries = []
+        for account in self.account_set.all().order_by('name'):
+            budget = account.budget
+            datesBalance = account.balance(from_date, to_date)
+            if budget > 0:
+                percentSpent = ceil(datesBalance / budget * 100)
+            else:
+                percentSpent = 0
+            accountSummaries.append(
+                {'id': account.id,
+                 'name': account.name,
+                 'budget': budget,
+                 'datesBalance': datesBalance,
+                 'percentSpent': percentSpent})
+        return accountSummaries
+
     def __str__(self):
-        return "%s (%s) nth: %s" % (self.name, self.sign, self.order)
+        # return "%s (%s) nth: %s" % (self.name, self.sign, self.order)
+        return self.name
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -36,7 +55,8 @@ class Account(models.Model):
         return total
 
     def __str__(self):
-        return "%s nth: %s" % (self.name, self.order)
+        # return "%s nth: %s" % (self.name, self.order)
+        return self.name
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

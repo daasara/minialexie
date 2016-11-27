@@ -1,28 +1,54 @@
 from datetime import date, datetime
 
-def parse_from_date(request):
-    # if "from" in request.GET:
-    #     try:
-    #         from_date = datetime.strptime(request.GET['from'], "%d/%m/%Y")
-    #     except ValueError:
-    #         from_date = date(1900, 1, 1)
-    # else:
-    #     from_date = date(1900, 1, 1)
-    # return from_date
+from django.db.models import Max
+
+DEFAULT_FROM_DATE = date(2001, 1, 1)
+DEFAULT_TO_DATE = date(2029, 1, 1)
+
+def parseDate(s, defaultDate=DEFAULT_FROM_DATE):
+    """Parse a string s in the formats 15/01/16 or 15/01/2016"""
+    try:
+        # 2-digit year
+        parsedDate = datetime.strptime(s, "%d/%m/%y")
+    except ValueError:
+        try:
+            # 4-digit year
+            parsedDate = datetime.strptime(s, "%d/%m/%Y")
+        except ValueError:  # some other invalid format
+            parsedDate = defaultDate
+    except KeyError:
+        parsedDate = defaultDate
+    return parsedDate
     
-    return datetime.strptime(request.session['fromDate'], "%d/%m/%Y")
+def parseFromDate(request):
+    try:
+        parsedDate = parseDate(request.session['fromDate'], DEFAULT_FROM_DATE)
+    except KeyError:
+        parsedDate = DEFAULT_FROM_DATE
+    request.session['fromDate'] = displayDate(parsedDate)
+    return parsedDate
 
-def parse_to_date(request):
-    # if "to" in request.GET:
-    #     try:
-    #         to_date = datetime.strptime(request.GET['to'], "%d/%m/%Y").date()
-    #     except ValueError:
-    #         to_date = date(2100, 1, 1)
-    # else:
-    #     to_date = date(2100, 1, 1)
-    # return to_date
+def parseToDate(request):
+    try:
+        parsedDate = parseDate(request.session['toDate'], DEFAULT_TO_DATE)
+    except KeyError:
+        parsedDate = DEFAULT_TO_DATE
+    request.session['toDate'] = displayDate(parsedDate)
+    return parsedDate
 
-    return datetime.strptime(request.session['toDate'], "%d/%m/%Y")
+def displayDate(d):
+    return d.strftime("%d/%m/%y")
 
-def display_date(d):
-    return d.strftime("%d/%m/%Y")
+def parseAccountTypeSign(value):
+    # Given a form's value, return +/-1
+    if value == 0:
+        return 1
+    else:
+        return round(value / abs(value))
+
+def nextOrderIndex(model, user):
+    objects = model.objects.filter(user=user)
+    if not objects:
+        return 1
+    else:
+        return objects.aggregate(Max('order'))['order__max'] + 1

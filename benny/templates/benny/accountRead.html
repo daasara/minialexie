@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="accountTypeBlock">
-    {{ account.name }}
+    <span class="accountName">{{ account.name }}</span>
 
     <a href="{% url 'benny:accountUpdate' account.id %}" class="small">edit</a> | <a href="{% url 'benny:accountConfirmDelete' account.id %}" class="small">delete</a>
 
@@ -13,4 +13,3 @@
 </div>
 
 {% endblock %}
-    

@@ -1,23 +1,14 @@
 <a href="{% url 'benny:index' %}">home</a>
 
-<!--
 |
-<a href="{% url 'benny:accountTypeCreate' %}">Create Account Type</a>
--->
+<a href="{% url 'logout' %}">logout</a>
 
-<!--
-|
-<a href="{% url 'benny:accountCreate' %}">Create Account</a>
--->
+<span class="small">({{ request.user }})</span>
 
-|
-<a href="{% url 'benny:transactionCreate' %}" class="small"> + create transaction</a>
+<br>
 
-|
-<a href="{% url 'logout' %}" class="small">logout</a>
-<br><br>
 <span class="small">
-    from
+    view transactions from
 
     <form action="{% url 'benny:changeDates' %}" method="POST" class="formLine">
         {% csrf_token %}
@@ -28,8 +19,12 @@
         <input type="text" name="to" size="10" value="{{ request.session.toDate }}">
 
         <input type="hidden" name="prevUrl" value="{{ request.path }}">
-        <input type="submit" value="go">
+        <input type="submit" value="update">
     </form>
+
+    <br>
+
+    <a href="{% url 'benny:transactionCreate' %}" class="small"> + create new transaction</a>
 </span>
 
 
