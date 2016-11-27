@@ -1,0 +1,34 @@
+{% extends 'benny/authBase.html' %}
+{% block title %}Benny - Login{% endblock %}
+
+{% block content %}
+<div id="loginContainer">
+    <div id="loginForm">
+        <form action="{% url "login" %}" method="POST">
+            {% csrf_token %}
+            <table id="loginTable">
+                <tr>
+                    <td colspan="2" class="brand">
+                        Login
+                    </td>
+                </tr>
+                {{ form.as_table }}
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" id="entrar" value="Entrar">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <script>
+         function demoLogin() {
+             document.getElementById('id_username').value = "demo";
+             document.getElementById('id_password').value = "demo";
+             document.getElementById('entrar').click();             
+         }
+        </script>
+
+        <a href="javascript:demoLogin()">View demo</a>
+    </div>
+</div>
+{% endblock %}

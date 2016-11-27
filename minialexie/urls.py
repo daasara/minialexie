@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import login
 
 import sitewide.views
 
@@ -24,5 +25,5 @@ urlpatterns = [
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^accounts/profile/$', sitewide.views.UserProfile.as_view()),
     url(r'^alexie/', include('alexie.urls')),
-    url(r'^benny/', include('benny.urls')),
+    url(r'^allcents/', include('benny.urls')),
 ]

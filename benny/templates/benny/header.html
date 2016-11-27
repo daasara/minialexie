@@ -1,15 +1,17 @@
 <nav class="navbar navbar-default"> <!-- navbar-fixed-top"> -->
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li><a href="{% url 'benny:index' %}"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li><a href="{% url 'benny:index' %}" class="accountName">All Cents</a></li>
             
             <li class="dropdown"> <!-- user -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-header">{{ request.user }}</li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a href="{% url 'logout' %}?next={% url 'benny:index' %}">Logout</a></li>
                 </ul>
             </li> <!-- user dropdown -->
+
+            <li><a href="{% url 'benny:index' %}"><span class="glyphicon glyphicon-list"></span></a></li>  <!-- list of all accounts -->
 
             <li class="dropdown"> <!-- new item -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus"></span></a>

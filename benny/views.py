@@ -12,20 +12,21 @@ from .forms import AccountTypeForm, AccountForm, TransactionForm
 from .util import parseDate, parseFromDate, parseToDate, displayDate
 from .util import DEFAULT_FROM_DATE, DEFAULT_TO_DATE
 from .util import parseAccountTypeSign, nextOrderIndex
-        
+
 def index(request):
     """
     Display all account balances in the selected time period.
     """
     if not request.user.is_authenticated():
-        return redirect('/auth/login/')
+        return redirect(reverse('login'))
 
     accountTypes = AccountType.objects.filter(user=request.user).order_by('order', 'name')
 
+    fromDate = parseFromDate(request)
+    toDate = parseToDate(request)
+
     for accountType in accountTypes:
         # retrieve balances here, using the parsed from and to dates
-        fromDate = parseFromDate(request)
-        toDate = parseToDate(request)
         accountType.accountSummaries = accountType.summarizeAccounts(fromDate, toDate)
 
         # compute total for accountType

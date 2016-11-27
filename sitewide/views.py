@@ -1,18 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 def index(request):
-    return HttpResponse("""
-    <pre>
-    Sitewide index
-
-    <a href="/admin/">Admin</a>
-
+    return redirect(reverse('benny:index'))
     
-    <a href="/benny/">Benny</a>
-    
-    """)
-
 class UserProfile(TemplateView):
     template_name = "registration/user_profile.html"

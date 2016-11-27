@@ -4,6 +4,7 @@ from decimal import Decimal
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.signals import user_logged_in
 
 class AccountType(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -68,3 +69,17 @@ class Transaction(models.Model):
 
     def __str__(self):
         return "%s %s %s %s/%s" % (self.date, self.description, self.amount, self.debit, self.credit)
+
+# reset demo data
+
+def resetDemoData(sender, user, request, **kwargs):
+    demoUser = User.objects.get(username="demo")
+
+    # delete account types
+    existingAccountTypes = AccountType.objects.filter(user=demoUser)
+    existingAccountTypes.delete()
+
+    # create typical account types
+    AccountType(user=demoUser, name='Assets Demo', sign=1, order=1).save()
+
+user_logged_in.connect(resetDemoData)

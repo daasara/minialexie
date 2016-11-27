@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Redirect to benny/
+LOGIN_REDIRECT_URL = '/allcents/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -31,9 +33,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'benny.apps.BennyConfig',
     'sitewide.apps.SitewideConfig',
     'alexie.apps.AlexieConfig',
-    'benny.apps.BennyConfig',
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,6 +73,13 @@ TEMPLATES = [
     },
 ]
 
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+# Authentication templates
+TEMPLATES_DIRS = (
+    PROJECT_PATH + '/templates/',
+)
+
 WSGI_APPLICATION = 'minialexie.wsgi.application'
 
 
@@ -107,7 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+# LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

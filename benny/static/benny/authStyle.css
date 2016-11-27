@@ -146,7 +146,7 @@ h1 {
     display: inline;
 }
 
-input[type=text], input[type=number] {
+input[type=text], input[type=number], input[type=password] {
     font-family: Lato;
     background: transparent;
     border: none;
@@ -170,3 +170,26 @@ select, option {
     height: 100px;
 }
 
+#loginContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#loginForm {
+    width: 40%;
+    text-align: center;
+}
+
+#loginTable {
+    display: inline-block;
+}
+
+#loginTable tr td {
+    padding: 10px;
+}
+
+.brand {
+    text-align: center;
+    font-weight: bold;
+}
