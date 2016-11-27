@@ -1,32 +1,27 @@
 Look for FIXMEs
 
-Create a table in accountRead template, compute total
-
 Pass a successUrl to transactionUpdate, so that after editing, redirect to successUrl
 
-Search
+Create a table in accountRead template, compute total
+
+Search: use GET, , search within session dates. Entire path becomes prevUrl for date presets
+Search view: use accountRead with accountName = Search results
 
 Wishlist
 ========
 
-checkboxes for transactions to delete several at once
+Checkboxes for transactions to delete several at once
 
 Reorder AccountTypes in index in any order, drag and drop in right order (use jQuery UI Sortable)
 
-Reorder accounts in any order (use jQuery UI Sortable)
-
 When moving accounts to another type, its 'order' must be placed last
-
-Pop-up for creating new accounts within Create Transaction, like Admin
 
 Resolved
 ========
 
-filter to display {{ transaction.amount }} as whole amount, dot and cents - IN BENNY, AMOUNT IS A DECIMAL
+Filter to display {{ transaction.amount }} as whole amount, dot and cents - IN BENNY, AMOUNT IS A DECIMAL
 
-Delete should be a method in the model - A FUNCTION IN VIEW
-
-Setting and remembering from/to dates: GET parameters in URL or store in session? - GET PARAMETERS IN URL, CAN BE BOOKMARKED
+Setting and remembering from/to dates: GET parameters in URL or store in session? - SESSION, LESS CLUTTER
 
 Create account link from AccountType automatically selects the right choice from select box
 
@@ -44,4 +39,8 @@ Parse from and to dates from GET parameters ( /benny?from=2016-01-01 )
 #     else:
 #        from_date = date(1900, 1, 1)
 #     return from_date
+
+Reorder accounts in any order (use jQuery UI Sortable)
+
+Pop-up for creating new accounts within Create Transaction, like Admin
 
