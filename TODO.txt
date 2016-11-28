@@ -1,18 +1,18 @@
 Look for FIXMEs
 
-New demo users must be created each time, otherwise, when a new demo user logs in, the previous person using demo will suddenly have all data reset 
-
-Fill in bogus transactions for demoUser (at the end of models.py)
-
 Pass a successUrl to transactionUpdate, so that after editing, redirect to successUrl
 
 Create a table in accountRead template, compute total
 
-Search: use GET, , search within session dates. Entire path becomes prevUrl for date presets
+Search: use GET, , search within session dates. Entire path becomes prevUrl in date preset links (calendar icon)
 Search view: use accountRead with accountName = Search results
 
 Wishlist
 ========
+
+New demo users must be created each time, otherwise, when a new demo user logs in, the previous person using demo will suddenly have all data reset 
+
+Fill in more bogus transactions for demoUser (at the end of benny/models.py)
 
 Checkboxes for transactions to delete several at once
 

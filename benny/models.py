@@ -2,9 +2,10 @@ import datetime
 from math import ceil
 from decimal import Decimal
 
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_in
+from django.core.exceptions import ObjectDoesNotExist
 
 class AccountType(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -70,71 +71,94 @@ class Transaction(models.Model):
     def __str__(self):
         return "%s %s %s %s/%s" % (self.date, self.description, self.amount, self.debit, self.credit)
 
+def saveTxn(user, desc, amount, debit, credit, year, month, day):
+    t = Transaction(user=user, description=desc, amount=Decimal(str(amount)), debit=debit, credit=credit, date=datetime.date(year, month, day))
+    t.save()
+        
 # reset demo data
-
+@transaction.atomic
 def resetDemoData(sender, user, request, **kwargs):
-    demoUser = User.objects.get(username="demo")
-    if user == demoUser:
-        # delete account types
-        existingAccountTypes = AccountType.objects.filter(user=demoUser)
-        existingAccountTypes.delete()
+    try:
+        demoUser = User.objects.get(username="demo")
+        if user == demoUser:
+            # delete account types
+            existingAccountTypes = AccountType.objects.filter(user=demoUser)
+            existingAccountTypes.delete()
 
-        # create typical account types
-        assets = AccountType(user=demoUser, name='Assets', sign=1, order=1)
-        expenses = AccountType(user=demoUser, name='Expenses', sign=1, order=2)
-        liabilities = AccountType(user=demoUser, name='Liabilities', sign=-1, order=3)
-        income = AccountType(user=demoUser, name='Income', sign=-1, order=4)
-        equity = AccountType(user=demoUser, name='Equity', sign=-1, order=5)
+            # create typical account types
+            assets = AccountType(user=demoUser, name='Assets', sign=1, order=1)
+            expenses = AccountType(user=demoUser, name='Expenses', sign=1, order=2)
+            liabilities = AccountType(user=demoUser, name='Liabilities', sign=-1, order=3)
+            income = AccountType(user=demoUser, name='Income', sign=-1, order=4)
+            equity = AccountType(user=demoUser, name='Equity', sign=-1, order=5)
 
-        assets.save()
-        expenses.save()
-        liabilities.save()
-        income.save()
-        equity.save()
-        
-        # create typical accounts
+            assets.save()
+            expenses.save()
+            liabilities.save()
+            income.save()
+            equity.save()
+            
+            # create typical accounts
 
-        # Assets
-        wallet = Account(accountType=assets, user=demoUser, name='Wallet', budget=0, order=1)
-        wallet.save()
-
-        checking = Account(accountType=assets, user=demoUser, name='Checking', budget=0, order=1)
-        checking.save()
+            # Assets
+            wallet = Account(accountType=assets, user=demoUser, name='Wallet', budget=0, order=1)
+            wallet.save()
         
-        savings = Account(accountType=assets, user=demoUser, name='Savings', budget=0, order=1)
-        savings.save()
+            checking = Account(accountType=assets, user=demoUser, name='Checking', budget=0, order=1)
+            checking.save()
         
-        # Expenses
-        groceries = Account(accountType=expenses, user=demoUser, name='Groceries', budget=0, order=1)
-        groceries.save()
+            savings = Account(accountType=assets, user=demoUser, name='Savings', budget=0, order=1)
+            savings.save()
         
-        utilities = Account(accountType=expenses, user=demoUser, name='Utilities', budget=0, order=1)
-        utilities.save()
+            # Expenses
+            groceries = Account(accountType=expenses, user=demoUser, name='Groceries', budget=0, order=1)
+            groceries.save()
         
-        restaurants = Account(accountType=expenses, user=demoUser, name='Restaurants', budget=0, order=1)
-        restaurants.save()
+            utilities = Account(accountType=expenses, user=demoUser, name='Utilities', budget=0, order=1)
+            utilities.save()
         
-        movies = Account(accountType=expenses, user=demoUser, name='Movies', budget=0, order=1)
-        movies.save()
+            restaurants = Account(accountType=expenses, user=demoUser, name='Restaurants', budget=0, order=1)
+            restaurants.save()
+        
+            movies = Account(accountType=expenses, user=demoUser, name='Movies', budget=0, order=1)
+            movies.save()
     
-        clothing = Account(accountType=expenses, user=demoUser, name='Clothing', budget=0, order=1)
-        clothing.save()
-    
-        # Liabilities
-        creditCard = Account(accountType=liabilities, user=demoUser, name='Credit card', budget=0, order=1)
-        creditCard.save()
-        
-        # Income
-        salary = Account(accountType=income, user=demoUser, name='Salary', budget=0, order=1)
-        salary.save()
-        
-        # Equity
-        opening = Account(accountType=equity, user=demoUser, name='Opening balance', budget=0, order=1)
-        opening.save()
+            clothing = Account(accountType=expenses, user=demoUser, name='Clothing', budget=0, order=1)
+            clothing.save()
 
-        # sample transactions
-        openChecking = Transaction(user=demoUser, description="Opening balance", amount=329, debit=checking, credit=opening, date=datetime.date(2016, 3, 2))
-        openChecking.save()
+            automotive = Account(accountType=expenses, user=demoUser, name='Automotive', budget=0, order=1)
+            automotive.save()
+
+            rent = Account(accountType=expenses, user=demoUser, name='Rent', budget=0, order=1)
+            rent.save()
+    
+            # Liabilities
+            creditCard = Account(accountType=liabilities, user=demoUser, name='Credit card', budget=0, order=1)
+            creditCard.save()
+            
+            # Income
+            salary = Account(accountType=income, user=demoUser, name='Salary', budget=0, order=1)
+            salary.save()
+            
+            # Equity
+            opening = Account(accountType=equity, user=demoUser, name='Opening balance', budget=0, order=1)
+            opening.save()
+
+            # sample transactions
+            openChecking = Transaction(user=demoUser, description="Opening balance", amount=Decimal("329.72"), debit=checking, credit=opening, date=datetime.date(2016, 3, 2))
+            openChecking.save()
+
+            openSavings = Transaction(user=demoUser, description="Opening balance", amount=Decimal("2921.34"), debit=savings, credit=opening, date=datetime.date(2016, 3, 2))
+            openSavings.save()
+
+            # using function saveTxn, with signature
+            # saveTxn(user, desc, amount, debit, credit, year, month, day):
+            saveTxn(demoUser, "Opening balance", 32.25, wallet, opening, 2016, 3, 2)
+            saveTxn(demoUser, "February salary", 2650.20, checking, salary, 2016, 3, 3)
+            saveTxn(demoUser, "Transfer", 520, savings, checking, 2016, 3, 4)
+            saveTxn(demoUser, "Chinatown Dim Sum", 32.80, restaurants, creditCard, 2016, 3, 5)
+    except ObjectDoesNotExist:
+        pass
         
 # call resetDemoData after logging in
 user_logged_in.connect(resetDemoData)

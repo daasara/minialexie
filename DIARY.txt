@@ -61,3 +61,7 @@ When editing the form in a CreateView, use form_class=None to avoid a TypeError 
 https://docs.djangoproject.com/en/1.10/ref/class-based-views/mixins-editing/
 
 Added get_absolute_url to Account model
+
+* 27.nov.16
+
+Bogus data for demo account in models.py
