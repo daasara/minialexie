@@ -9,6 +9,8 @@ Search view: use accountRead with accountName = Search results
 
 Hide error pages (set DEBUG=False?)
 
+Pie charts in index, move accountType summaries to a new URL
+
 Wishlist
 ========
 
