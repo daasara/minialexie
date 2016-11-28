@@ -1,5 +1,24 @@
-<p>
-    {{ transaction }}
-    <a href="{% url 'benny:transactionUpdate' transaction.id %}">(edit)</a>
-    <a href="{% url 'benny:transactionConfirmDelete' transaction.id %}">(delete)</a>
-</p>
+{% load humanize %}
+<tr>
+    <td>
+    <a href="{% url 'benny:transactionUpdate' transaction.id %}">edit</a>
+    |
+    <a href="{% url 'benny:transactionConfirmDelete' transaction.id %}">delete</a>
+    </td>
+    <td>
+        {{ transaction.date|date:"d/m/Y" }}
+    </td>
+    <td>
+        {{ transaction.description }}
+    </td>
+    <td class="amount">
+        {{ transaction.amount|intcomma }}
+    </td>
+    <td>
+        {{ transaction.debit }}
+    </td>
+    <td>
+        {{ transaction.credit }}
+    </td>
+</tr>
+

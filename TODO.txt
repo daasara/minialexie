@@ -1,11 +1,13 @@
 Look for FIXMEs
 
-Pass a successUrl to transactionUpdate, so that after editing, redirect to successUrl
+Pass a successUrl to transactionUpdate inside Update form as a hidden item name="prevUrl", so that after editing, we redirect to prevUrl
 
-Create a table in accountRead template, compute total
+Format date as d/m/y in transaction create/update form
 
 Search: use GET, , search within session dates. Entire path becomes prevUrl in date preset links (calendar icon)
 Search view: use accountRead with accountName = Search results
+
+Hide error pages (set DEBUG=False?)
 
 Wishlist
 ========
@@ -22,6 +24,8 @@ When moving accounts to another type, its 'order' must be placed last
 
 Resolved
 ========
+
+Create a table in accountRead template, compute total
 
 Filter to display {{ transaction.amount }} as whole amount, dot and cents - IN BENNY, AMOUNT IS A DECIMAL
 

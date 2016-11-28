@@ -171,6 +171,7 @@ def accountRead(request, id):
 
     return render(request, 'benny/accountRead.html',
                   {'account': account,
+                   'accountBalance': account.balance(from_date, to_date),
                    'transactions': transactions})
 
 def accountUpdate(request, id):

@@ -170,3 +170,23 @@ select, option {
     height: 100px;
 }
 
+.transactionSummariesTable tr td {
+    padding: 3px 10px 3px 0;
+}
+
+.transactionSummariesTable tr th {
+    padding: 3px 10px 3px 0;
+}
+
+.transactionSummariesTable tr td.amount {
+    text-align: right;
+}
+
+.transactionSummariesTable tr th.amount {
+    text-align: right;
+}
+
+.transactionSummariesTable tr td.total {
+    font-weight: bold;
+}
+

@@ -1,15 +1,35 @@
 {% extends "benny/base.html" %}
+{% load humanize %}
 {% block title %}Account - Read{% endblock %}
 
 {% block content %}
 <div class="accountTypeBlock">
     <span class="accountName">{{ account.name }}</span>
-
+    &nbsp;
     <a href="{% url 'benny:accountUpdate' account.id %}" class="small">edit</a> | <a href="{% url 'benny:accountConfirmDelete' account.id %}" class="small">delete</a>
 
-    {% for transaction in transactions %}
-    {% include 'benny/transactionSummaryLine.html' %}
-    {% endfor %}
+    <br><br>
+    <table class="transactionSummariesTable">
+        <tr>
+            <th>&nbsp;</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="amount">Amount</th>
+            <th>Debit</th>
+            <th>Credit</th>
+        </tr>
+        {% for transaction in transactions %}
+        {% include 'benny/transactionSummaryLine.html' %}
+        {% endfor %}
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td class="total">Total</td>
+            <td class="amount total">{{ accountBalance|intcomma }}</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
 </div>
 
 {% endblock %}
