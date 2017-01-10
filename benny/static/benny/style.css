@@ -190,3 +190,6 @@ select, option {
     font-weight: bold;
 }
 
+.gi-default-size {
+    font-size: 18px;
+}
