@@ -15,3 +15,5 @@ source venv/bin/activate
 alexie - first version. Stopped development on 24.nov.16
 
 benny - second version. Began development on 24.nov.16
+
+> python manage.py runserver
