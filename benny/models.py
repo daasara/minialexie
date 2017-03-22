@@ -145,10 +145,10 @@ def resetDemoData(sender, user, request, **kwargs):
             opening.save()
 
             # sample transactions
-            openChecking = Transaction(user=demoUser, description="Opening balance", amount=Decimal("329.72"), debit=checking, credit=opening, date=datetime.date(2016, 3, 2))
+            openChecking = Transaction(user=demoUser, description="Opening balance", amount=Decimal("329.72"), debit=checking, credit=opening, date=datetime.date(2017, 3, 2))
             openChecking.save()
 
-            openSavings = Transaction(user=demoUser, description="Opening balance", amount=Decimal("2921.34"), debit=savings, credit=opening, date=datetime.date(2016, 3, 2))
+            openSavings = Transaction(user=demoUser, description="Opening balance", amount=Decimal("2921.34"), debit=savings, credit=opening, date=datetime.date(2017, 3, 2))
             openSavings.save()
 
             # using function saveTxn, with signature
@@ -175,33 +175,33 @@ def resetDemoData(sender, user, request, **kwargs):
             saveTxn(demoUser, "Electricity", 49.20, utilities, checking, 2017, 3, 5)
 
             # auto
-            saveTxn(demoUser, "Tune-up", 35.50, automotive, creditCard, 2016, 2, 19)
-            saveTxn(demoUser, "Air freshener", 3.9, automotive, wallet, 2016, 3, 5)
-            saveTxn(demoUser, "Gas", 35.23, automotive, creditCard, 2016, 3, 4)
+            saveTxn(demoUser, "Tune-up", 35.50, automotive, creditCard, 2017, 2, 19)
+            saveTxn(demoUser, "Air freshener", 3.9, automotive, wallet, 2017, 3, 5)
+            saveTxn(demoUser, "Gas", 35.23, automotive, creditCard, 2017, 3, 4)
 
             # clothing
-            saveTxn(demoUser, "Baseball cap", 15, clothing, wallet, 2016, 3, 1)
-            saveTxn(demoUser, "Running shoes", 59.9, clothing, creditCard, 2016, 3, 5)
-            saveTxn(demoUser, "Sweatshirt", 35.95, clothing, creditCard, 2016, 3, 12)
+            saveTxn(demoUser, "Baseball cap", 15, clothing, wallet, 2017, 3, 1)
+            saveTxn(demoUser, "Running shoes", 59.9, clothing, creditCard, 2017, 3, 5)
+            saveTxn(demoUser, "Sweatshirt", 35.95, clothing, creditCard, 2017, 3, 12)
 
             # groceries
-            saveTxn(demoUser, "Water and potatoes", 12.32, groceries, wallet, 2016, 3, 1)
-            saveTxn(demoUser, "Cat food", 15.50, groceries, wallet, 2016, 3, 12)
+            saveTxn(demoUser, "Water and potatoes", 12.32, groceries, wallet, 2017, 3, 1)
+            saveTxn(demoUser, "Cat food", 15.50, groceries, wallet, 2017, 3, 12)
 
             # movies
-            saveTxn(demoUser, "Thriller", 16.90, movies, creditCard, 2016, 3, 4)
-            saveTxn(demoUser, "Romantic comedy", 12.90, movies, creditCard, 2016, 3, 11)
-            saveTxn(demoUser, "Cartoon", 16.90, movies, creditCard, 2016, 3, 18)
+            saveTxn(demoUser, "Thriller", 16.90, movies, creditCard, 2017, 3, 4)
+            saveTxn(demoUser, "Romantic comedy", 12.90, movies, creditCard, 2017, 3, 11)
+            saveTxn(demoUser, "Cartoon", 16.90, movies, creditCard, 2017, 3, 18)
 
             # rent
-            saveTxn(demoUser, "January rent", 400, rent, checking, 2016, 1, 5)
-            saveTxn(demoUser, "February rent", 400, rent, checking, 2016, 2, 5)
-            saveTxn(demoUser, "March rent", 400, rent, checking, 2016, 3, 5)
+            saveTxn(demoUser, "January rent", 400, rent, checking, 2017, 1, 5)
+            saveTxn(demoUser, "February rent", 400, rent, checking, 2017, 2, 5)
+            saveTxn(demoUser, "March rent", 400, rent, checking, 2017, 3, 5)
 
             # restaurants
-            saveTxn(demoUser, "Sushi", 72.20, restaurants, creditCard, 2016, 3, 10)
-            saveTxn(demoUser, "Ramen", 19.90, restaurants, creditCard, 2016, 3, 2)
-            saveTxn(demoUser, "Tempura", 32.15, restaurants, wallet, 2016, 2, 15)
+            saveTxn(demoUser, "Sushi", 72.20, restaurants, creditCard, 2017, 3, 10)
+            saveTxn(demoUser, "Ramen", 19.90, restaurants, creditCard, 2017, 3, 2)
+            saveTxn(demoUser, "Tempura", 32.15, restaurants, wallet, 2017, 2, 15)
 
     except ObjectDoesNotExist:
         pass
