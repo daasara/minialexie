@@ -154,18 +154,18 @@ def resetDemoData(sender, user, request, **kwargs):
             # using function saveTxn, with signature
             # saveTxn(user, desc, amount, debit, credit, year, month, day):
             saveTxn(demoUser, "Opening balance", 32.25, wallet, opening, 2017, 1, 1)
-            saveTxn(demoUser, "January salary", 1650.20, checking, salary, 2017, 2, 1)
-            saveTxn(demoUser, "Transfer", 520, savings, checking, 2017, 2, 2)
+            saveTxn(demoUser, "January salary", 2650.20, checking, salary, 2017, 2, 1)
+            saveTxn(demoUser, "Transfer", 620, savings, checking, 2017, 2, 2)
             saveTxn(demoUser, "Chinatown Dim Sum", 32.80, restaurants, creditCard, 2017, 3, 5)
 
             # sample data
-            saveTxn(demoUser, "February salary", 1650.20, checking, salary, 2017, 3, 2)
+            saveTxn(demoUser, "February salary", 2650.20, checking, salary, 2017, 3, 2)
             saveTxn(demoUser, "New tires", 320.95, automotive, checking, 2017, 3, 9)
             saveTxn(demoUser, "Transfer", 490, savings, checking, 2017, 3, 9)
 
             saveTxn(demoUser, "Oil change", 20, automotive, creditCard, 2017, 3, 12)
             saveTxn(demoUser, "Black jeans", 49.90, clothing, creditCard, 2017, 3, 14)
-            saveTxn(demoUser, "Pay credit card", 30, creditCard, checking, 2017, 3, 15)
+            saveTxn(demoUser, "Pay credit card", 100, creditCard, checking, 2017, 3, 15)
             saveTxn(demoUser, "Withdrawal", 300, wallet, checking, 2017, 2, 15)
             saveTxn(demoUser, "Band T-shirt", 15.50, clothing, checking, 2017, 2, 17)
             saveTxn(demoUser, "Chicken, rice", 9.23, groceries, wallet, 2017, 2, 19)
@@ -173,6 +173,35 @@ def resetDemoData(sender, user, request, **kwargs):
             saveTxn(demoUser, "Gas", 15.90, utilities, checking, 2017, 3, 3)
             saveTxn(demoUser, "Water", 12.30, utilities, checking, 2017, 3, 5)
             saveTxn(demoUser, "Electricity", 49.20, utilities, checking, 2017, 3, 5)
+
+            # auto
+            saveTxn(demoUser, "Tune-up", 35.50, automotive, creditCard, 2016, 2, 19)
+            saveTxn(demoUser, "Air freshener", 3.9, automotive, wallet, 2016, 3, 5)
+            saveTxn(demoUser, "Gas", 35.23, automotive, creditCard, 2016, 3, 4)
+
+            # clothing
+            saveTxn(demoUser, "Baseball cap", 15, clothing, wallet, 2016, 3, 1)
+            saveTxn(demoUser, "Running shoes", 59.9, clothing, creditCard, 2016, 3, 5)
+            saveTxn(demoUser, "Sweatshirt", 35.95, clothing, creditCard, 2016, 3, 12)
+
+            # groceries
+            saveTxn(demoUser, "Water and potatoes", 12.32, groceries, wallet, 2016, 3, 1)
+            saveTxn(demoUser, "Cat food", 15.50, groceries, wallet, 2016, 3, 12)
+
+            # movies
+            saveTxn(demoUser, "Thriller", 16.90, movies, creditCard, 2016, 3, 4)
+            saveTxn(demoUser, "Romantic comedy", 12.90, movies, creditCard, 2016, 3, 11)
+            saveTxn(demoUser, "Cartoon", 16.90, movies, creditCard, 2016, 3, 18)
+
+            # rent
+            saveTxn(demoUser, "January rent", 400, rent, checking, 2016, 1, 5)
+            saveTxn(demoUser, "February rent", 400, rent, checking, 2016, 2, 5)
+            saveTxn(demoUser, "March rent", 400, rent, checking, 2016, 3, 5)
+
+            # restaurants
+            saveTxn(demoUser, "Sushi", 72.20, restaurants, creditCard, 2016, 3, 10)
+            saveTxn(demoUser, "Ramen", 19.90, restaurants, creditCard, 2016, 3, 2)
+            saveTxn(demoUser, "Tempura", 32.15, restaurants, wallet, 2016, 2, 15)
 
     except ObjectDoesNotExist:
         pass
