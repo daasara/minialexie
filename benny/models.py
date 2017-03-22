@@ -163,7 +163,19 @@ def resetDemoData(sender, user, request, **kwargs):
             saveTxn(demoUser, "April salary", 2650.20, checking, salary, 2016, 5, 5)
             saveTxn(demoUser, "New tires", 320.95, automotive, checking, 2016, 3, 29)
             saveTxn(demoUser, "Transfer", 990, savings, checking, 2016, 4, 5)
-            
+
+            saveTxn(demoUser, "May salary", 2650.20, checking, salary, 2016, 6, 2)
+            saveTxn(demoUser, "Oil change", 20, automotive, creditCard, 2016, 4, 12)
+            saveTxn(demoUser, "Black jeans", 49.90, clothing, creditCard, 2016, 4, 14)
+            saveTxn(demoUser, "Pay credit card", 30, creditCard, checking, 2016, 4, 15)
+            saveTxn(demoUser, "Withdrawal", 300, wallet, checking, 2016, 4, 15)
+            saveTxn(demoUser, "Band T-shirt", 15.50, clothing, checking, 2016, 4, 17)
+            saveTxn(demoUser, "Chicken, rice", 9.23, groceries, wallet, 2016, 4, 19)
+            saveTxn(demoUser, "Blockbuster action flick", 12, movies, wallet, 2016, 5, 1)
+            saveTxn(demoUser, "Gas", 15.90, utilities, checking, 2016, 5, 3)
+            saveTxn(demoUser, "Water", 12.30, utilities, checking, 2016, 5, 5)
+            saveTxn(demoUser, "Electricity", 49.20, utilities, checking, 2016, 5, 5)
+
     except ObjectDoesNotExist:
         pass
         
